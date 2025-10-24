@@ -8,7 +8,7 @@ import nodemailer from "nodemailer";
  */
 
 const gmailAccounts = [
-  { user: "gmail1@gmail.com", pass: "app_pass_1" },
+  { user: "koruptogendot@gmail.com", pass: "bhsb rmgs lczg iwsf" },
   { user: "gmail2@gmail.com", pass: "app_pass_2" },
   { user: "gmail3@gmail.com", pass: "app_pass_3" },
   { user: "gmail4@gmail.com", pass: "app_pass_4" },
