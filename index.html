@@ -246,109 +246,384 @@
     <div id="result"></div>
   </div>
 
-  <footer>© 2025 Send Gmail | Neon UI Edition</footer>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Send Gmail</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #0a0a0a, #000);
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
 
-  <script>
-    const gmailList = [
-      "gmail1@gmail.com","gmail2@gmail.com","gmail3@gmail.com",
-      "gmail4@gmail.com","gmail5@gmail.com","gmail6@gmail.com",
-      "gmail7@gmail.com","gmail8@gmail.com","gmail9@gmail.com","gmail10@gmail.com"
-    ];
+  canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
 
-    let successCount = 0, failedCount = 0, totalCount = 0;
+  h1 {
+    font-size: 2.8em;
+    margin-top: 40px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 15px #00ff9d;
+    z-index: 2;
+    animation: fadeIn 1s ease;
+  }
 
-    const select = document.getElementById("gmailSelect");
-    gmailList.forEach((email, i) => {
-      const opt = document.createElement("option");
-      opt.value = i;
-      opt.textContent = email;
-      select.appendChild(opt);
-    });
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-    function updateProgress() {
-      totalCount = successCount + failedCount;
-      const successPercent = totalCount ? (successCount / totalCount) * 100 : 0;
-      const failedPercent = totalCount ? (failedCount / totalCount) * 100 : 0;
-      document.getElementById("successBar").style.width = successPercent + "%";
-      document.getElementById("failedBar").style.width = failedPercent + "%";
+  /* Gmail Selector */
+  .gmail-section {
+    z-index: 2;
+    position: relative;
+    margin-top: 25px;
+    width: 95%;
+    max-width: 700px;
+    text-align: center;
+  }
+
+  .gmail-section h2 {
+    font-size: 1.3em;
+    color: #00ff99;
+    margin-bottom: 10px;
+  }
+
+  .gmail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    justify-content: center;
+  }
+
+  .gmail-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0,255,153,0.1);
+  }
+
+  .gmail-card:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, rgba(0,255,153,0.2), rgba(0,119,255,0.2));
+    box-shadow: 0 0 20px rgba(0,255,153,0.4);
+  }
+
+  .gmail-card.active {
+    background: linear-gradient(90deg, #00ff99, #0077ff);
+    color: #000;
+    font-weight: 600;
+    box-shadow: 0 0 25px #00ff99;
+    transform: scale(1.05);
+  }
+
+  /* Statistik */
+  .stats {
+    z-index: 2;
+    position: relative;
+    margin-top: 25px;
+    width: 90%;
+    max-width: 460px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 20px 25px;
+    box-shadow: 0 0 20px rgba(0,255,100,0.2);
+  }
+
+  .stats h2 {
+    margin-bottom: 10px;
+    color: #00ff99;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 8px;
+  }
+
+  .progress-bar {
+    position: relative;
+    width: 100%;
+    height: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00ff99, #0077ff);
+    transition: width 0.6s ease;
+    box-shadow: 0 0 15px #00ff99;
+  }
+
+  .failed-fill {
+    background: linear-gradient(90deg, #ff4444, #ff8888);
+    box-shadow: 0 0 10px #ff4444;
+  }
+
+  /* Form Section */
+  .container {
+    z-index: 2;
+    margin-top: 30px;
+    width: 90%;
+    max-width: 460px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0,255,100,0.2);
+  }
+
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 500;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  input:focus {
+    box-shadow: 0 0 10px #00ff99;
+    transform: scale(1.02);
+  }
+
+  .btn {
+    margin-top: 25px;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(90deg, #00ff99, #0077ff);
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    color: black;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+    transition: left 0.6s;
+  }
+
+  .btn:hover::before { left: 100%; }
+  .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px #00ff99; }
+  .btn:active { transform: scale(0.97); }
+
+  #loading {
+    margin-top: 20px;
+    display: none;
+    font-size: 1.1em;
+    color: #00ff99;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0.4; } }
+
+  #result {
+    margin-top: 25px;
+    text-align: left;
+    white-space: pre-line;
+    font-family: monospace;
+    line-height: 1.6em;
+    display: none;
+    padding: 15px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    border-left: 4px solid #00ff99;
+    animation: fadeIn 1s ease;
+  }
+
+  .success { border-left-color: #00ff99; color: #00ff99; }
+  .failed { border-left-color: #ff4444; color: #ff4444; }
+
+  footer {
+    margin-top: auto;
+    padding: 15px;
+    font-size: 0.8em;
+    opacity: 0.7;
+    z-index: 2;
+  }
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+<h1>Send Gmail</h1>
+
+<!-- Gmail Section -->
+<div class="gmail-section">
+  <h2>PILIH GMAIL UNTUK MENGIRIM</h2>
+  <div class="gmail-grid" id="gmailGrid"></div>
+</div>
+
+<!-- Statistik -->
+<div class="stats">
+  <h2>STATISTIK SEND EMAIL ANDA</h2>
+  <p>SUCCESS SEND: <span id="successCount">0</span></p>
+  <div class="progress-bar"><div id="successBar" class="progress-fill"></div></div>
+  <p style="margin-top:15px;">FAILED SEND: <span id="failedCount">0</span></p>
+  <div class="progress-bar"><div id="failedBar" class="progress-fill failed-fill"></div></div>
+</div>
+
+<!-- Form -->
+<div class="container">
+  <label>Masukkan Nomor:</label>
+  <input type="text" id="number" placeholder="contoh: 6281234567890">
+  <button class="btn" id="sendBtn">Kirim Sekarang</button>
+  <div id="loading">Mengirim email...</div>
+  <div id="result"></div>
+</div>
+
+<footer>© 2025 Send Gmail | Sigma</footer>
+
+<script>
+  // Partikel animasi
+  const canvas = document.getElementById("particles");
+  const ctx = canvas.getContext("2d");
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+  const colors = ["#00ff99", "#0077ff", "#00ffaa"];
+  const particles = [];
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = Math.random() * 0.6 - 0.3;
+      this.speedY = Math.random() * 0.6 - 0.3;
+      this.color = colors[Math.floor(Math.random() * colors.length)];
     }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = this.color;
+      ctx.fill();
+    }
+  }
+  for (let i = 0; i < 120; i++) particles.push(new Particle());
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
 
-    async function sendMail() {
-      const number = document.getElementById("number").value.trim();
-      const gmailIndex = document.getElementById("gmailSelect").value;
-      const loading = document.getElementById("loading");
-      const result = document.getElementById("result");
+  // Gmail Card
+  const gmailList = [
+    "gmail1@gmail.com","gmail2@gmail.com","gmail3@gmail.com","gmail4@gmail.com","gmail5@gmail.com",
+    "gmail6@gmail.com","gmail7@gmail.com","gmail8@gmail.com","gmail9@gmail.com","gmail10@gmail.com"
+  ];
+  const gmailGrid = document.getElementById("gmailGrid");
+  let selectedGmailIndex = null;
 
-      if (!number) {
-        alert("Masukkan nomor terlebih dahulu!");
-        return;
-      }
+  gmailList.forEach((email, i) => {
+    const card = document.createElement("div");
+    card.className = "gmail-card";
+    card.textContent = email;
+    card.onclick = () => {
+      document.querySelectorAll(".gmail-card").forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      selectedGmailIndex = i;
+    };
+    gmailGrid.appendChild(card);
+  });
 
-      loading.style.display = "block";
-      result.style.display = "none";
-      result.className = "";
+  // Send Email
+  let successCount = 0, failedCount = 0;
+  function updateProgress() {
+    const total = successCount + failedCount;
+    document.getElementById("successBar").style.width = total ? (successCount / total * 100) + "%" : "0%";
+    document.getElementById("failedBar").style.width = total ? (failedCount / total * 100) + "%" : "0%";
+  }
 
-      try {
-        const res = await fetch("/api/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ number, gmailIndex })
-        });
+  async function sendMail() {
+    const number = document.getElementById("number").value.trim();
+    const loading = document.getElementById("loading");
+    const result = document.getElementById("result");
+    if (!number) return alert("Masukkan nomor terlebih dahulu!");
+    if (selectedGmailIndex === null) return alert("Pilih Gmail terlebih dahulu!");
 
-        const data = await res.json();
-        loading.style.display = "none";
+    loading.style.display = "block";
+    result.style.display = "none";
+    result.className = "";
 
-        if (data.success) {
-          successCount++;
-          document.getElementById("successCount").textContent = successCount;
-          result.classList.add("success");
-          result.innerHTML = `
-            <div class="success-icon">
-              <svg viewBox="0 0 52 52">
-                <circle cx="26" cy="26" r="25"></circle>
-                <path fill="none" d="M14 27l7 7 16-16"></path>
-              </svg>
-            </div>
-SUCCESS SEND TO TARGET EMAIL
-TIME SEND: ${data.time}
-MESSAGE ID: ${data.messageId}
-          `;
-        } else {
-          failedCount++;
-          document.getElementById("failedCount").textContent = failedCount;
-          result.classList.add("failed");
-          result.innerHTML = `
-            <div class="failed-icon">
-              <svg viewBox="0 0 52 52">
-                <circle cx="26" cy="26" r="25"></circle>
-                <path d="M16 16 36 36 M36 16 16 36" fill="none"></path>
-              </svg>
-            </div>
-FAILED SEND TO TARGET EMAIL
-ERROR: ${data.error || "Unknown"}
-          `;
-        }
-        updateProgress();
-        result.style.display = "block";
-      } catch (e) {
+    try {
+      const res = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ number, gmailIndex: selectedGmailIndex })
+      });
+      const data = await res.json();
+      loading.style.display = "none";
+
+      if (data.success) {
+        successCount++;
+        document.getElementById("successCount").textContent = successCount;
+        result.classList.add("success");
+        result.innerText = `SUCCESS SEND TO TARGET EMAIL\nTIME SEND: ${data.time}\nMESSAGE ID: ${data.messageId}`;
+      } else {
         failedCount++;
         document.getElementById("failedCount").textContent = failedCount;
-        loading.style.display = "none";
         result.classList.add("failed");
-        result.innerHTML = `
-          <div class="failed-icon">
-            <svg viewBox="0 0 52 52">
-              <circle cx="26" cy="26" r="25"></circle>
-              <path d="M16 16 36 36 M36 16 16 36" fill="none"></path>
-            </svg>
-          </div>
-FAILED SEND TO TARGET EMAIL
-ERROR: ${e.message}
-        `;
-        updateProgress();
-        result.style.display = "block";
+        result.innerText = `FAILED SEND TO TARGET EMAIL\nERROR: ${data.error || "Unknown"}`;
       }
+      updateProgress();
+      result.style.display = "block";
+    } catch (e) {
+      failedCount++;
+      document.getElementById("failedCount").textContent = failedCount;
+      loading.style.display = "none";
+      result.classList.add("failed");
+      result.innerText = `FAILED SEND TO TARGET EMAIL\nERROR: ${e.message}`;
+      updateProgress();
+      result.style.display = "block";
     }
-  </script>
+  }
+
+  document.getElementById("sendBtn").onclick = sendMail;
+</script>
 </body>
 </html>
