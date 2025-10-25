@@ -9,14 +9,14 @@
 <body>
   <canvas id="particles"></canvas>
 
-  <!-- INTRO PAGE -->
-  <section id="intro" class="active">
+  <!-- INTRO SECTION -->
+  <section id="intro" class="show">
     <h1 class="neonTitle">Send Gmail System</h1>
     <p class="subtext">Powerful Email Sender Dashboard</p>
     <button id="startBtn">Start Sending</button>
   </section>
 
-  <!-- MAIN PAGE -->
+  <!-- MAIN SECTION -->
   <section id="main" class="hidden">
     <h2 class="mainTitle">Send Gmail</h2>
 
@@ -38,7 +38,7 @@
     </div>
 
     <div class="stats">
-      <h3 class="neonSub">📊 Statistik Pengiriman</h3>
+      <h3 class="neonSub">Statistik Pengiriman</h3>
       <div class="stat-item successStat">SUCCESS SEND: <span id="successCount">0</span></div>
       <div class="stat-item failedStat">FAILED SEND: <span id="failedCount">0</span></div>
       <div class="progress-bar">
@@ -47,7 +47,7 @@
     </div>
 
     <div class="card">
-      <input id="number" type="text" placeholder="Enter Email Target" class="input">
+      <input id="number" type="text" placeholder="Enter Target Email" class="input" />
       <button id="sendBtn" class="btn-send">Send Gmail</button>
       <div class="loader" id="loader"></div>
       <div class="status-box">
@@ -68,7 +68,7 @@
         intro.classList.add('hidden');
         main.classList.remove('hidden');
         main.classList.add('fadeIn');
-      }, 900);
+      }, 1000);
     };
 
     document.querySelectorAll('.gmail-icon').forEach(icon => {
@@ -132,17 +132,17 @@
       progress.style.width = total ? (success / total * 100) + '%' : '0%';
     }
 
-    // Background particle animation
+    // particle background
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     canvas.width = innerWidth;
     canvas.height = innerHeight;
-    let particles = Array.from({length: 100}, () => ({
+    const particles = Array.from({ length: 100 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       r: Math.random() * 2 + 1,
-      dx: (Math.random() - 0.5) * 0.7,
-      dy: (Math.random() - 0.5) * 0.7
+      dx: (Math.random() - 0.5) * 0.6,
+      dy: (Math.random() - 0.5) * 0.6
     }));
     function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -154,119 +154,6 @@
         p.x += p.dx; p.y += p.dy;
         if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-      });
-      requestAnimationFrame(animateParticles);
-    }
-    animateParticles();
-  </script>
-</body>
-</html>
-          failedBox.innerHTML = `<h4>FAILED SEND</h4><p>${data.error || 'Unknown Error'}</p>`;
-          failedBox.style.display = 'block';
-          failedBox.classList.add('popFailed');
-        }
-        updateStats();
-      } catch {
-        loader.style.display = 'none';
-        failed++;
-        failedBox.innerHTML = `<h4>FAILED SEND</h4><p>Network Error</p>`;
-        failedBox.style.display = 'block';
-        failedBox.classList.add('popFailed');
-        updateStats();
-      }
-    };
-
-    function updateStats() {
-      successCount.textContent = success;
-      failedCount.textContent = failed;
-      const total = success + failed;
-      progress.style.width = total ? (success / total * 100) + '%' : '0%';
-    }
-
-    // Particles
-    const canvas = document.getElementById('particles');
-    const ctx = canvas.getContext('2d');
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
-
-    let particles = Array.from({length: 100}, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 2 + 1,
-      dx: (Math.random() - 0.5) * 0.7,
-      dy: (Math.random() - 0.5) * 0.7
-    }));
-
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0,255,255,0.7)';
-        ctx.fill();
-        p.x += p.dx;
-        p.y += p.dy;
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-      });
-      requestAnimationFrame(animateParticles);
-    }
-    animateParticles();
-  </script>
-</body>
-</html>
-            <p>TIME SEND: ${new Date().toLocaleTimeString()}</p>
-            <p>MESSAGE ID: ${Math.floor(Math.random()*100000)}</p>`;
-          successBox.style.display = 'block';
-          successBox.classList.add('popSuccess');
-        } else {
-          failed++;
-          failedBox.innerHTML = `<h4>FAILED SEND</h4><p>${data.error || 'Unknown error'}</p>`;
-          failedBox.style.display = 'block';
-          failedBox.classList.add('popFailed');
-        }
-        updateStats();
-      } catch {
-        loader.style.display = 'none';
-        failed++;
-        failedBox.innerHTML = `<h4>FAILED SEND</h4><p>Network Error</p>`;
-        failedBox.style.display = 'block';
-        failedBox.classList.add('popFailed');
-        updateStats();
-      }
-    };
-
-    function updateStats() {
-      successCount.textContent = success;
-      failedCount.textContent = failed;
-      const total = success + failed;
-      const percent = total ? (success / total) * 100 : 0;
-      progress.style.width = percent + '%';
-    }
-
-    // Particles background
-    const canvas = document.getElementById('particles');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    let particles = Array.from({length: 70}, () => ({
-      x: Math.random()*canvas.width,
-      y: Math.random()*canvas.height,
-      r: Math.random()*2+1,
-      dx: (Math.random()-0.5)*0.6,
-      dy: (Math.random()-0.5)*0.6
-    }));
-
-    function animateParticles() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      particles.forEach(p=>{
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fillStyle = 'rgba(0,255,255,0.8)';
-        ctx.fill();
-        p.x+=p.dx; p.y+=p.dy;
-        if(p.x<0||p.x>canvas.width) p.dx*=-1;
-        if(p.y<0||p.y>canvas.height) p.dy*=-1;
       });
       requestAnimationFrame(animateParticles);
     }
