@@ -1,24 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Send Gmail</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Send Gmail | @sigmaanjing</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Loading screen -->
-  <div id="loadingScreen">
-    <div class="progress-container-load">
-      <div id="progressBarLoad" class="progress-bar-load"></div>
-    </div>
-    <p class="loading-text">Loading Website...</p>
-  </div>
 
-  <!-- Background -->
-  <canvas id="cyberBg"></canvas>
-
-  <!-- Menu -->
+  <!-- MENU -->
   <div class="menu">
     <div class="menu-icon" id="menuToggle">=</div>
     <div class="menu-dropdown" id="menuDropdown">
@@ -28,193 +19,55 @@
     </div>
   </div>
 
-  <!-- HOME SECTION -->
-  <section id="home" class="section active">
-    <h1 class="main-title">HI, THIS IS MY WEBSITE</h1>
-    <p class="subtitle">
-      Welcome to my website — simple, modern, and fully animated.<br>
-      Built with 💚 love by <b>@sigmaanjing</b>.
-    </p>
-    <button class="next-btn" onclick="showSection('sendgmail')">Go to Send Gmail</button>
-  </section>
-
-  <!-- SEND GMAIL SECTION -->
-  <section id="sendgmail" class="section hidden">
-    <h1 class="title">Send Gmail</h1>
-
-    <div class="gmail-grid">
-      <!-- Gmail logos -->
-      ${Array(10).fill(`<img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" class="gmail-logo" alt="gmail">`).join('')}
-    </div>
-
-    <div class="stats">
-      <h2>📊 STATISTIK SEND EMAIL ANDA</h2>
-      <div class="stat-item">SUCCESS SEND (<span id="successCount">0</span>)</div>
-      <div class="stat-item">FAILED SEND (<span id="failCount">0</span>)</div>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Send Gmail</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <!-- Loading screen -->
-  <div id="loadingScreen">
-    <div class="progress-container-load">
-      <div id="progressBarLoad" class="progress-bar-load"></div>
-    </div>
-    <p class="loading-text">Loading Website...</p>
-  </div>
-
-  <!-- Background -->
-  <canvas id="cyberBg"></canvas>
-
-  <!-- Menu -->
-  <div class="menu">
-    <div class="menu-icon" id="menuToggle">=</div>
-    <div class="menu-dropdown" id="menuDropdown">
-      <button onclick="showSection('home')">🏠 Home</button>
-      <button onclick="showSection('sendgmail')">📧 Send Gmail</button>
-      <button onclick="showSection('admin')">⚙️ Control Admin</button>
-    </div>
-  </div>
+  <!-- RELOAD BUTTON -->
+  <button class="reload-btn" id="reloadBtn" title="Reload Website">🔁</button>
 
   <!-- HOME SECTION -->
   <section id="home" class="section active">
     <h1 class="main-title">HI, THIS IS MY WEBSITE</h1>
-    <p class="subtitle">
-      Welcome to my website — simple, modern, and fully animated.<br>
-      Built with 💚 love by <b>@sigmaanjing</b>.
-    </p>
+    <p>Welcome to my dark neon world.<br>Built with 💚 by <b>@sigmaanjing</b>.</p>
     <button class="next-btn" onclick="showSection('sendgmail')">Go to Send Gmail</button>
+    <div class="progress-container">
+      <div class="progress-bar" id="homeProgress"></div>
+    </div>
   </section>
 
   <!-- SEND GMAIL SECTION -->
   <section id="sendgmail" class="section hidden">
-    <h1 class="title">Send Gmail</h1>
-
+    <h1>Send Gmail</h1>
+    
     <div class="gmail-grid">
-      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 1</p></div>
-      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 2</p></div>
-      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 3</p></div>
-      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 4</p></div>
-      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 5</p></div>
-      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 6</p></div>
-      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 7</p></div>
-      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 8</p></div>
-      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 9</p></div>
-      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 10</p></div>
+      <button class="gmail-choice" data-gmail="gmail1">Gmail 1</button>
+      <button class="gmail-choice" data-gmail="gmail2">Gmail 2</button>
+      <button class="gmail-choice" data-gmail="gmail3">Gmail 3</button>
+      <button class="gmail-choice" data-gmail="gmail4">Gmail 4</button>
+      <button class="gmail-choice" data-gmail="gmail5">Gmail 5</button>
+      <button class="gmail-choice" data-gmail="gmail6">Gmail 6</button>
+      <button class="gmail-choice" data-gmail="gmail7">Gmail 7</button>
+      <button class="gmail-choice" data-gmail="gmail8">Gmail 8</button>
+      <button class="gmail-choice" data-gmail="gmail9">Gmail 9</button>
+      <button class="gmail-choice" data-gmail="gmail10">Gmail 10</button>
     </div>
 
     <div class="stats">
-      <h2>📊 STATISTIK SEND EMAIL ANDA</h2>
-      <div class="stat-item">SUCCESS SEND (<span id="successCount">0</span>)</div>
-      <div class="stat-item">FAILED SEND (<span id="failCount">0</span>)</div>
-      <div class="progress-container">
-        <div id="progressBar" class="progress-bar"></div>
-      </div>
+      <h2>📊 EMAIL STATS</h2>
+      <div>SUCCESS (<span id="successCount">0</span>)</div>
+      <div>FAILED (<span id="failCount">0</span>)</div>
     </div>
 
-    <form id="sendForm" class="email-form">
+    <form class="email-form" id="sendForm">
       <input type="text" id="number" placeholder="Enter Number...">
       <button type="submit">SEND NOW</button>
     </form>
-
     <div id="status" class="status"></div>
   </section>
 
   <!-- ADMIN SECTION -->
   <section id="admin" class="section hidden">
-    <h1 class="title">Control Admin</h1>
-    <p>Admin control panel — future feature here...</p>
+    <h1>Control Admin</h1>
+    <p>Future features will appear here...</p>
   </section>
 
-  <!-- Scripts -->
-  <script>
-    // Loading progress animation
-    const loadingScreen = document.getElementById("loadingScreen");
-    const progressBarLoad = document.getElementById("progressBarLoad");
-    let load = 0;
-    const loadInterval = setInterval(() => {
-      load += 2;
-      progressBarLoad.style.width = load + "%";
-      if (load >= 100) {
-        clearInterval(loadInterval);
-        setTimeout(() => {
-          loadingScreen.style.opacity = "0";
-          setTimeout(() => (loadingScreen.style.display = "none"), 500);
-        }, 300);
-      }
-    }, 40);
-
-    // Menu toggle
-    const menuToggle = document.getElementById("menuToggle");
-    const menuDropdown = document.getElementById("menuDropdown");
-    menuToggle.addEventListener("click", () => {
-      menuDropdown.classList.toggle("show");
-    });
-
-    // Show sections
-    function showSection(id) {
-      document.querySelectorAll(".section").forEach(s => {
-        s.classList.add("hidden");
-        s.classList.remove("active");
-      });
-      document.getElementById(id).classList.remove("hidden");
-      document.getElementById(id).classList.add("active");
-      menuDropdown.classList.remove("show");
-    }
-
-    // Gmail form
-    const form = document.getElementById("sendForm");
-    const statusDiv = document.getElementById("status");
-    const progressBar = document.getElementById("progressBar");
-    let successCount = 0;
-    let failCount = 0;
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const number = document.getElementById("number").value.trim();
-      if (!number) {
-        alert("Masukkan nomor terlebih dahulu!");
-        return;
-      }
-
-      statusDiv.textContent = "Sending...";
-      statusDiv.className = "status sending";
-      progressBar.style.width = "50%";
-
-      try {
-        const res = await fetch("/api/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ number })
-        });
-        const data = await res.json();
-
-        if (res.ok && data.success) {
-          successCount++;
-          statusDiv.textContent = "SUCCESS SEND TO EMAIL TARGET";
-          statusDiv.className = "status success";
-          progressBar.style.width = "100%";
-        } else {
-          failCount++;
-          statusDiv.textContent = "FAILED SEND (App Password Missing or Error)";
-          statusDiv.className = "status failed";
-          progressBar.style.width = "0%";
-        }
-      } catch (err) {
-        failCount++;
-        statusDiv.textContent = "FAILED SEND (Network Error)";
-        statusDiv.className = "status failed";
-        progressBar.style.width = "0%";
-      }
-
-      document.getElementById("successCount").textContent = successCount;
-      document.getElementById("failCount").textContent = failCount;
-    });
-  </script>
+<script src="script.js"></script>
 </body>
 </html>
