@@ -9,10 +9,13 @@
 </head>
 <body>
 
-<!-- MENU -->
-<div class="menu">
+<!-- RELOAD BUTTON -->
+<a href="#" class="reload-btn" title="Reload Website">🔁</a>
+
+<!-- MENU BUTTON -->
+<div class="menu-button">
   <input type="checkbox" id="menuToggleCheckbox" hidden>
-  <label for="menuToggleCheckbox" class="menu-icon">=</label>
+  <label for="menuToggleCheckbox" class="menu-icon">= MENU</label>
   <div class="menu-dropdown">
     <a href="#home">🏠 Home</a>
     <a href="#sendgmail">📧 Send Gmail</a>
@@ -20,42 +23,39 @@
   </div>
 </div>
 
-<!-- RELOAD BUTTON -->
-<a href="#" class="reload-btn" title="Reload Website">🔁</a>
-
 <!-- HOME SECTION -->
 <section id="home" class="section">
   <h1 class="main-title">HI, THIS IS MY WEBSITE</h1>
   <p>Welcome to my dark neon world.<br>Built with 💚 by <b>@sigmaanjing</b>.</p>
   <a href="#sendgmail" class="next-btn">Go to Send Gmail</a>
   <div class="progress-container">
-    <div class="progress-bar"></div>
+    <div class="progress-bar loading"></div>
   </div>
 </section>
 
 <!-- SEND GMAIL SECTION -->
 <section id="sendgmail" class="section">
   <h1>Send Gmail</h1>
-  <div class="gmail-grid">
-    <span class="gmail-choice">Gmail 1</span>
-    <span class="gmail-choice">Gmail 2</span>
-    <span class="gmail-choice">Gmail 3</span>
-    <span class="gmail-choice">Gmail 4</span>
-    <span class="gmail-choice">Gmail 5</span>
-    <span class="gmail-choice">Gmail 6</span>
-    <span class="gmail-choice">Gmail 7</span>
-    <span class="gmail-choice">Gmail 8</span>
-    <span class="gmail-choice">Gmail 9</span>
-    <span class="gmail-choice">Gmail 10</span>
-  </div>
-  <div class="stats">
-    <h2>📊 EMAIL STATS</h2>
-    <div class="stat-item">SUCCESS (<span>0</span>)</div>
-    <div class="stat-item">FAILED (<span>0</span>)</div>
-    <div class="progress-container">
-      <div class="progress-bar"></div>
-    </div>
-  </div>
+
+  <!-- Form dengan API /api/send -->
+  <form class="email-form" action="/api/send" method="POST">
+    <input type="text" name="number" placeholder="Enter Number / Email" required>
+    <select name="gmail" required>
+      <option value="" disabled selected>Select Gmail</option>
+      <option value="gmail1">Gmail 1</option>
+      <option value="gmail2">Gmail 2</option>
+      <option value="gmail3">Gmail 3</option>
+      <option value="gmail4">Gmail 4</option>
+      <option value="gmail5">Gmail 5</option>
+      <option value="gmail6">Gmail 6</option>
+      <option value="gmail7">Gmail 7</option>
+      <option value="gmail8">Gmail 8</option>
+      <option value="gmail9">Gmail 9</option>
+      <option value="gmail10">Gmail 10</option>
+    </select>
+    <button type="submit">SEND NOW</button>
+  </form>
+  <div class="status">Status akan muncul dari server setelah submit.</div>
 </section>
 
 <!-- ADMIN SECTION -->
