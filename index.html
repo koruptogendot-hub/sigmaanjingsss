@@ -51,6 +51,67 @@
       <h2>📊 STATISTIK SEND EMAIL ANDA</h2>
       <div class="stat-item">SUCCESS SEND (<span id="successCount">0</span>)</div>
       <div class="stat-item">FAILED SEND (<span id="failCount">0</span>)</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send Gmail</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Loading screen -->
+  <div id="loadingScreen">
+    <div class="progress-container-load">
+      <div id="progressBarLoad" class="progress-bar-load"></div>
+    </div>
+    <p class="loading-text">Loading Website...</p>
+  </div>
+
+  <!-- Background -->
+  <canvas id="cyberBg"></canvas>
+
+  <!-- Menu -->
+  <div class="menu">
+    <div class="menu-icon" id="menuToggle">=</div>
+    <div class="menu-dropdown" id="menuDropdown">
+      <button onclick="showSection('home')">🏠 Home</button>
+      <button onclick="showSection('sendgmail')">📧 Send Gmail</button>
+      <button onclick="showSection('admin')">⚙️ Control Admin</button>
+    </div>
+  </div>
+
+  <!-- HOME SECTION -->
+  <section id="home" class="section active">
+    <h1 class="main-title">HI, THIS IS MY WEBSITE</h1>
+    <p class="subtitle">
+      Welcome to my website — simple, modern, and fully animated.<br>
+      Built with 💚 love by <b>@sigmaanjing</b>.
+    </p>
+    <button class="next-btn" onclick="showSection('sendgmail')">Go to Send Gmail</button>
+  </section>
+
+  <!-- SEND GMAIL SECTION -->
+  <section id="sendgmail" class="section hidden">
+    <h1 class="title">Send Gmail</h1>
+
+    <div class="gmail-grid">
+      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 1</p></div>
+      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 2</p></div>
+      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 3</p></div>
+      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 4</p></div>
+      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 5</p></div>
+      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 6</p></div>
+      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 7</p></div>
+      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 8</p></div>
+      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 9</p></div>
+      <div class="gmail-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png"><p>Gmail 10</p></div>
+    </div>
+
+    <div class="stats">
+      <h2>📊 STATISTIK SEND EMAIL ANDA</h2>
+      <div class="stat-item">SUCCESS SEND (<span id="successCount">0</span>)</div>
+      <div class="stat-item">FAILED SEND (<span id="failCount">0</span>)</div>
       <div class="progress-container">
         <div id="progressBar" class="progress-bar"></div>
       </div>
