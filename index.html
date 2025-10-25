@@ -9,14 +9,17 @@
 <body>
   <canvas id="particles"></canvas>
 
-  <!-- Intro Section -->
-  <section id="intro">
+  <!-- INTRO PAGE -->
+  <section id="intro" class="active">
     <h1 class="neonTitle">Send Gmail System</h1>
+    <p class="subtext">Powerful Email Sender Dashboard</p>
     <button id="startBtn">Start Sending</button>
   </section>
 
-  <!-- Main Section -->
-  <section id="main">
+  <!-- MAIN PAGE -->
+  <section id="main" class="hidden">
+    <h2 class="mainTitle">Send Gmail</h2>
+
     <div class="gmail-container">
       <div class="gmail-row">
         <div class="gmail-icon active" title="Gmail 1"></div>
@@ -44,8 +47,8 @@
     </div>
 
     <div class="card">
-      <input id="number" type="text" placeholder="Enter Number" class="input">
-      <button id="sendBtn" class="btn-send">Send Now</button>
+      <input id="number" type="text" placeholder="Enter Email Target" class="input">
+      <button id="sendBtn" class="btn-send">Send Gmail</button>
       <div class="loader" id="loader"></div>
       <div class="status-box">
         <div id="successBox" class="success"></div>
@@ -62,13 +65,12 @@
     startBtn.onclick = () => {
       intro.classList.add('fadeOut');
       setTimeout(() => {
-        intro.style.display = 'none';
-        main.style.display = 'flex';
+        intro.classList.add('hidden');
+        main.classList.remove('hidden');
         main.classList.add('fadeIn');
       }, 900);
     };
 
-    // Gmail icon select
     document.querySelectorAll('.gmail-icon').forEach(icon => {
       icon.onclick = () => {
         document.querySelectorAll('.gmail-icon').forEach(i => i.classList.remove('active'));
@@ -88,22 +90,77 @@
 
     sendBtn.onclick = async () => {
       const number = document.getElementById('number').value.trim();
-      if (!number) return alert('Masukkan number terlebih dahulu!');
+      if (!number) return alert('Masukkan email target!');
       loader.style.display = 'block';
       successBox.style.display = 'none';
       failedBox.style.display = 'none';
 
       try {
-        const res = await fetch('/api/send', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ number }) });
+        const res = await fetch('/api/send', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ number })
+        });
         const data = await res.json();
         loader.style.display = 'none';
         if (res.ok) {
           success++;
-          successBox.innerHTML = `<h4>SUCCESS SEND TO TARGET EMAIL</h4><p>TIME SEND: ${new Date().toLocaleTimeString()}</p><p>MESSAGE ID: ${data.messageId || '9999'}</p>`;
+          successBox.innerHTML = `
+            <h4>SUCCESS SEND TO TARGET EMAIL</h4>
+            <p>TIME SEND: ${new Date().toLocaleTimeString()}</p>
+            <p>MESSAGE ID: ${data.messageId || '9999'}</p>`;
           successBox.style.display = 'block';
-          successBox.classList.add('popSuccess');
         } else {
           failed++;
+          failedBox.innerHTML = `<h4>FAILED SEND</h4><p>${data.error || 'Unknown Error'}</p>`;
+          failedBox.style.display = 'block';
+        }
+        updateStats();
+      } catch {
+        loader.style.display = 'none';
+        failed++;
+        failedBox.innerHTML = `<h4>FAILED SEND</h4><p>Network Error</p>`;
+        failedBox.style.display = 'block';
+        updateStats();
+      }
+    };
+
+    function updateStats() {
+      successCount.textContent = success;
+      failedCount.textContent = failed;
+      const total = success + failed;
+      progress.style.width = total ? (success / total * 100) + '%' : '0%';
+    }
+
+    // Background particle animation
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+    let particles = Array.from({length: 100}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2 + 1,
+      dx: (Math.random() - 0.5) * 0.7,
+      dy: (Math.random() - 0.5) * 0.7
+    }));
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0,255,255,0.6)';
+        ctx.fill();
+        p.x += p.dx; p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+  </script>
+</body>
+</html>
           failedBox.innerHTML = `<h4>FAILED SEND</h4><p>${data.error || 'Unknown Error'}</p>`;
           failedBox.style.display = 'block';
           failedBox.classList.add('popFailed');
