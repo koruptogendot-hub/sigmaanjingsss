@@ -1,95 +1,103 @@
-* {margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body {background:#000;color:#fff;overflow:hidden;height:100vh;}
-canvas#particles {position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
-.hidden {display:none;}
-.show {display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;}
-.fadeOut {animation:fadeOut 1s forwards;}
-.fadeIn {animation:fadeIn 1s forwards;}
-@keyframes fadeOut {to{opacity:0;transform:scale(0.95);}}
-@keyframes fadeIn {from{opacity:0;}to{opacity:1;}}
+/* ===== Base / Reset ===== */
+:root {
+  --bg: #000;
+  --panel: rgba(20,20,20,0.6);
+  --muted: #9a9a9a;
+  --accent-dark: rgba(255,255,255,0.03);
+}
+* {box-sizing:border-box;margin:0;padding:0}
+html,body {height:100%;background:var(--bg);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+canvas#bgLines {position:fixed;inset:0;z-index:0;display:block;}
 
-.neonTitle {
-  font-size:3rem;
-  color:#00e0ff;
-  text-shadow:0 0 15px #00e0ff, 0 0 30px #0077ff;
-  margin-bottom:10px;
+/* ===== Intro ===== */
+section#intro {
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;
+  transition:transform .7s ease,opacity .7s ease;
 }
-.subtext {color:#ccc;margin-bottom:20px;}
-#startBtn {
-  background:linear-gradient(90deg,#00e0ff,#0077ff);
-  border:none;padding:12px 30px;
-  color:white;font-size:1.1rem;
-  cursor:pointer;border-radius:50px;
-  box-shadow:0 0 20px #0077ff;
-  transition:transform 0.3s,box-shadow 0.3s;
+.intro-visible {display:flex}
+.intro-inner {text-align:center;color:#ddd;transform-origin:center;backdrop-filter:blur(2px)}
+.title {font-size:48px;color:#ddd;letter-spacing:1px;margin-bottom:8px;opacity:1;transform-origin:center}
+.subtitle {color:var(--muted);margin-bottom:20px}
+.btn-start {
+  appearance:none;border:1px solid rgba(255,255,255,0.04);padding:14px 34px;border-radius:40px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color:#eee;font-weight:600;cursor:pointer;box-shadow:0 6px 30px rgba(0,0,0,0.6), inset 0 -2px 6px rgba(255,255,255,0.01);
+  transition:transform .18s ease, box-shadow .18s ease;
 }
-#startBtn:hover {transform:scale(1.1);box-shadow:0 0 30px #00e0ff;}
+.btn-start:hover {transform:translateY(-6px);box-shadow:0 12px 60px rgba(0,0,0,0.7);}
 
-#main {padding:30px;text-align:center;}
-.mainTitle {font-size:2rem;color:#00e0ff;text-shadow:0 0 15px #00e0ff;margin-bottom:20px;}
+/* zoom out animation class */
+.intro-zoomout {transform:scale(.98);opacity:0;pointer-events:none}
 
-.gmail-container {margin-bottom:20px;}
-.gmail-row {display:flex;justify-content:center;gap:15px;margin-bottom:10px;}
-.gmail-icon {
-  width:60px;height:60px;
-  background:url('https://www.svgrepo.com/show/355037/gmail.svg') center/contain no-repeat;
-  filter:drop-shadow(0 0 10px #00e0ff);
-  transition:transform 0.3s,filter 0.3s;
-  animation:float 3s ease-in-out infinite;
-  cursor:pointer;
+/* ===== Main (hidden initially) ===== */
+main#main {position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;opacity:1}
+.main-hidden {display:none}
+.main-inner {
+  width:min(1100px,95%);max-width:1200px;margin:auto;padding:28px;
+  display:flex;flex-direction:column;align-items:center;gap:22px;
+  transform-origin:center;
 }
-.gmail-icon:hover {transform:scale(1.1);filter:drop-shadow(0 0 25px #00e0ff);}
-.gmail-icon.active {filter:drop-shadow(0 0 35px #00e0ff);transform:scale(1.15);}
-@keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);} }
+.main-zoomin {animation:mainZoom .7s ease both}
+@keyframes mainZoom {from{opacity:0;transform:scale(.96) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
 
-.stats {
-  margin:20px auto;width:80%;max-width:500px;
-  background:rgba(0,0,0,0.5);
-  border:1px solid #00e0ff;border-radius:10px;
-  padding:15px;text-align:left;
-  box-shadow:0 0 20px #0077ff inset;
-}
-.neonSub {text-align:center;margin-bottom:10px;}
-.stat-item {margin:5px 0;}
-.progress-bar {background:#111;height:10px;border-radius:10px;overflow:hidden;}
-.progress {height:10px;width:0;background:linear-gradient(90deg,#00e0ff,#0077ff);transition:width 0.5s ease;}
+/* heading */
+.main-heading {color:#ddd;font-size:26px;text-align:center;letter-spacing:0.6px}
 
-.card {
-  margin:25px auto;
-  background:rgba(0,0,0,0.5);
-  border:1px solid #00e0ff;
-  border-radius:15px;
-  padding:20px;width:90%;max-width:400px;
-  box-shadow:0 0 20px #0077ff inset;
+/* ===== Gmail icons grid ===== */
+.gmail-grid {display:flex;flex-direction:column;gap:10px;align-items:center}
+.gmail-row {display:flex;gap:14px;justify-content:center}
+.gmail-cell {
+  width:86px;height:86px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;
+  border:1px solid rgba(255,255,255,0.02);backdrop-filter:blur(2px);transition:transform .28s ease, box-shadow .28s ease;
+  box-shadow:0 8px 30px rgba(0,0,0,0.6), inset 0 -2px 6px rgba(255,255,255,0.01);
 }
-.input {
-  width:100%;padding:10px;
-  border:none;outline:none;
-  background:#111;color:#fff;
-  border-radius:5px;
-  margin-bottom:15px;
-}
-.btn-send {
-  width:100%;padding:12px;
-  background:linear-gradient(90deg,#00e0ff,#0077ff);
-  border:none;color:#fff;border-radius:50px;
-  font-size:1rem;cursor:pointer;
-  transition:transform 0.3s,box-shadow 0.3s;
-}
-.btn-send:hover {transform:scale(1.05);box-shadow:0 0 25px #00e0ff;}
+.gmail-cell .gmail-svg {width:44px;height:32px;transition:transform .2s ease, filter .2s ease;display:block}
+.gmail-cell .gmail-label {font-size:12px;color:#bdbdbd;margin-top:8px;opacity:.9}
 
-.loader {
-  display:none;margin:10px auto;
-  border:4px solid #333;border-top:4px solid #00e0ff;
-  border-radius:50%;width:40px;height:40px;
-  animation:spin 1s linear infinite;
-}
-@keyframes spin {100%{transform:rotate(360deg);} }
+/* hover & active */
+.gmail-cell:hover {transform:translateY(-8px) scale(1.04);box-shadow:0 18px 60px rgba(0,0,0,0.7)}
+.gmail-cell.active {transform:translateY(-10px) scale(1.06);box-shadow:0 26px 80px rgba(0,0,0,0.85);border-color:rgba(255,255,255,0.04)}
 
-.status-box {margin-top:10px;text-align:center;}
-.success,.failed {
-  display:none;padding:10px;border-radius:10px;
-  margin-top:10px;font-size:0.9rem;
+/* ===== Stats panel ===== */
+.stats {width:100%;max-width:980px;padding:14px;border-radius:12px;background:var(--panel);border:1px solid var(--accent-dark);box-shadow:0 10px 40px rgba(0,0,0,0.6);}
+.stats-inner {display:flex;flex-direction:column;gap:12px}
+.stats-row {display:flex;gap:12px;align-items:stretch;justify-content:center}
+.stat-card {flex:1;min-width:160px;padding:12px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.02);display:flex;flex-direction:column;align-items:center;gap:8px}
+.stat-anim {width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow: inset 0 -4px 8px rgba(255,255,255,0.01)}
+.stat-title {font-size:12px;color:#bfbfbf;letter-spacing:1px}
+.stat-value {font-size:20px;color:#eee;font-weight:700}
+
+/* small animated ornament inside stat (pure css) */
+#statSuccessAnim {box-shadow: inset 0 -4px 10px rgba(0,0,0,0.6);position:relative;overflow:hidden}
+#statSuccessAnim::after {content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.03));transform:translateX(-100%);animation:statSweep 3s linear infinite}
+#statFailedAnim::after {content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.03));transform:translateX(100%);animation:statSweepRev 3s linear infinite}
+@keyframes statSweep {to{transform:translateX(100%)}} @keyframes statSweepRev {to{transform:translateX(-100%)}}
+
+/* progress */
+.progress-wrap {margin-top:6px}
+.progress-labels {display:flex;justify-content:space-between;color:#bfbfbf;font-size:12px;margin-bottom:6px}
+.progress-track {background:#0a0a0a;border-radius:8px;padding:4px;border:1px solid rgba(255,255,255,0.02)}
+.progress-bar {height:12px;width:0;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));border-radius:6px;box-shadow:inset 0 -3px 12px rgba(255,255,255,0.01);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+
+/* ===== Send card ===== */
+.send-card {width:100%;max-width:480px;padding:18px;border-radius:12px;background:var(--panel);border:1px solid var(--accent-dark);display:flex;flex-direction:column;gap:12px;align-items:center}
+.target-input {width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:#0b0b0b;color:#ddd;outline:none}
+.btn-send {width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));color:#eee;font-weight:700;cursor:pointer;transition:transform .16s ease,box-shadow .16s ease}
+.btn-send:hover {transform:translateY(-6px);box-shadow:0 18px 60px rgba(0,0,0,0.75)}
+.loader {display:none;width:40px;height:40px;border-radius:50%;border:4px solid rgba(255,255,255,0.03);border-top-color:rgba(255,255,255,0.06);animation:spin 1s linear infinite;margin:6px auto}
+@keyframes spin {to{transform:rotate(360deg)}}
+
+/* result area */
+.result-area {width:100%;display:flex;flex-direction:column;gap:6px;align-items:center}
+.result {display:none;width:100%;padding:10px;border-radius:8px;font-size:13px}
+.result.success {background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);color:#dfe}
+.result.failed {background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02);color:#f8d}
+
+/* small responsive tweaks */
+@media (max-width:810px){
+  .gmail-row{flex-wrap:wrap;gap:10px}
+  .gmail-cell{width:72px;height:72px}
+  .main-inner{padding:16px}
+  .title{font-size:28px}
 }
-.success {border:1px solid #00ff7f;color:#00ff7f;}
-.failed {border:1px solid #ff0055;color:#ff557f;}
