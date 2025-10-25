@@ -1,109 +1,138 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Send Gmail — Stealth</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Send Gmail | Sigma Project</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- BACKGROUND CANVAS -->
   <canvas id="bgLines"></canvas>
 
-  <!-- SPLASH LOADING (fullscreen) -->
+  <!-- MENU TOGGLE -->
+  <div id="menuToggle" class="menu-toggle">☰</div>
+
+  <!-- SIDEBAR MENU -->
+  <nav id="sideMenu" class="side-menu hidden">
+    <ul>
+      <li id="menuHome">🏠 Home</li>
+      <li id="menuSend">✉️ Send Gmail</li>
+      <li id="menuAdmin">🛠️ Admin Menu</li>
+    </ul>
+  </nav>
+
+  <!-- SPLASH -->
   <div id="splash" class="splash">
     <div class="splash-inner">
-      <div class="splash-title">SEND GMAIL</div>
-      <div class="splash-sub">Preparing interface...</div>
+      <h1 class="splash-title">SEND GMAIL</h1>
+      <p class="splash-sub">Initializing system...</p>
       <div class="splash-progress">
         <div id="splashBar" class="splash-bar"></div>
       </div>
     </div>
   </div>
 
-  <!-- MAIN APP -->
-  <main id="app" class="app hidden" aria-hidden="true">
+  <!-- HALAMAN WELCOME -->
+  <section id="homePage" class="page active">
+    <h1 class="welcome-title">Welcome to My Website</h1>
+    <p class="welcome-sub">
+      Situs ini dibuat oleh <strong>anda</strong> untuk mengelola pengiriman Gmail secara modern dan cepat.
+    </p>
+    <p class="welcome-desc">
+      Tekan tombol menu di pojok kiri atas untuk membuka <strong>Admin Menu</strong> atau <strong>Send Gmail Menu</strong>.
+    </p>
+  </section>
+
+  <!-- HALAMAN SEND GMAIL -->
+  <main id="sendPage" class="page hidden">
     <header class="app-header">
       <h1 class="brand">SEND GMAIL</h1>
-      <p class="tag">Stealth mode • Full animated • Responsive</p>
+      <p class="tag">Stealth mode • Modern Interface</p>
     </header>
 
-    <!-- Gmail icons grid (2x5) -->
-    <section class="gmail-section" aria-label="Pilih Gmail">
+    <section class="gmail-section">
       <div class="gmail-row">
-        <div class="gmail-cell active" data-index="0" title="Gmail 1">
-          <img src="gmail.png" alt="Gmail 1" class="gmail-img"><div class="label">Gmail 1</div>
-        </div>
-        <div class="gmail-cell" data-index="1" title="Gmail 2">
-          <img src="gmail.png" alt="Gmail 2" class="gmail-img"><div class="label">Gmail 2</div>
-        </div>
-        <div class="gmail-cell" data-index="2" title="Gmail 3">
-          <img src="gmail.png" alt="Gmail 3" class="gmail-img"><div class="label">Gmail 3</div>
-        </div>
-        <div class="gmail-cell" data-index="3" title="Gmail 4">
-          <img src="gmail.png" alt="Gmail 4" class="gmail-img"><div class="label">Gmail 4</div>
-        </div>
-        <div class="gmail-cell" data-index="4" title="Gmail 5">
-          <img src="gmail.png" alt="Gmail 5" class="gmail-img"><div class="label">Gmail 5</div>
-        </div>
+        <div class="gmail-cell active" data-index="0"><img src="gmail.png"><div class="label">Gmail 1</div></div>
+        <div class="gmail-cell" data-index="1"><img src="gmail.png"><div class="label">Gmail 2</div></div>
+        <div class="gmail-cell" data-index="2"><img src="gmail.png"><div class="label">Gmail 3</div></div>
+        <div class="gmail-cell" data-index="3"><img src="gmail.png"><div class="label">Gmail 4</div></div>
+        <div class="gmail-cell" data-index="4"><img src="gmail.png"><div class="label">Gmail 5</div></div>
       </div>
-
       <div class="gmail-row">
-        <div class="gmail-cell" data-index="5" title="Gmail 6">
-          <img src="gmail.png" alt="Gmail 6" class="gmail-img"><div class="label">Gmail 6</div>
-        </div>
-        <div class="gmail-cell" data-index="6" title="Gmail 7">
-          <img src="gmail.png" alt="Gmail 7" class="gmail-img"><div class="label">Gmail 7</div>
-        </div>
-        <div class="gmail-cell" data-index="7" title="Gmail 8">
-          <img src="gmail.png" alt="Gmail 8" class="gmail-img"><div class="label">Gmail 8</div>
-        </div>
-        <div class="gmail-cell" data-index="8" title="Gmail 9">
-          <img src="gmail.png" alt="Gmail 9" class="gmail-img"><div class="label">Gmail 9</div>
-        </div>
-        <div class="gmail-cell" data-index="9" title="Gmail 10">
-          <img src="gmail.png" alt="Gmail 10" class="gmail-img"><div class="label">Gmail 10</div>
-        </div>
+        <div class="gmail-cell" data-index="5"><img src="gmail.png"><div class="label">Gmail 6</div></div>
+        <div class="gmail-cell" data-index="6"><img src="gmail.png"><div class="label">Gmail 7</div></div>
+        <div class="gmail-cell" data-index="7"><img src="gmail.png"><div class="label">Gmail 8</div></div>
+        <div class="gmail-cell" data-index="8"><img src="gmail.png"><div class="label">Gmail 9</div></div>
+        <div class="gmail-cell" data-index="9"><img src="gmail.png"><div class="label">Gmail 10</div></div>
       </div>
     </section>
 
-    <!-- Statistik -->
-    <section class="stats" aria-label="Statistik pengiriman">
+    <section class="stats">
       <div class="stat-row">
         <div class="stat-card">
-          <div class="stat-anim" aria-hidden="true"></div>
           <div class="stat-title">SUCCESS SEND</div>
           <div class="stat-value" id="successCount">0</div>
         </div>
-
         <div class="stat-card">
-          <div class="stat-anim" aria-hidden="true"></div>
           <div class="stat-title">FAILED SEND</div>
           <div class="stat-value" id="failedCount">0</div>
         </div>
       </div>
-
       <div class="progress-wrap">
-        <div class="progress-labels"><span>Progress</span><span id="progressPct">0%</span></div>
         <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
       </div>
     </section>
 
-    <!-- Send area -->
-    <section class="send" aria-label="Kirim email">
-      <input id="target" class="input" type="text" placeholder="Masukkan nomor atau email target" aria-label="Target" />
-      <div class="controls-row">
-        <button id="sendBtn" class="btn">SEND GMAIL</button>
-      </div>
-
-      <div class="result-area" aria-live="polite">
-        <div id="successBox" class="result success" style="display:none"></div>
-        <div id="failedBox" class="result failed" style="display:none"></div>
-      </div>
+    <section class="send">
+      <input id="target" class="input" placeholder="Masukkan nomor atau email target" />
+      <button id="sendBtn" class="btn">SEND GMAIL</button>
+      <div id="resultBox" class="result"></div>
     </section>
   </main>
 
-  <!-- INLINE JS: in-app behavior (no external .js file required) -->
+  <!-- HALAMAN ADMIN -->
+  <section id="adminPage" class="page hidden">
+    <h1 class="admin-title">Admin Menu</h1>
+    <p class="admin-desc">Fitur ini masih dikunci. Tambahkan pengaturan admin di masa depan.</p>
+  </section>
+
+  <script>
+    const splash = document.getElementById("splash");
+    const splashBar = document.getElementById("splashBar");
+    const homePage = document.getElementById("homePage");
+    const sendPage = document.getElementById("sendPage");
+    const adminPage = document.getElementById("adminPage");
+    const sideMenu = document.getElementById("sideMenu");
+    const menuToggle = document.getElementById("menuToggle");
+
+    // Splash loading
+    let progress = 0;
+    const splashTimer = setInterval(() => {
+      progress += 2;
+      splashBar.style.width = progress + "%";
+      if (progress >= 100) {
+        clearInterval(splashTimer);
+        splash.classList.add("fadeOut");
+        setTimeout(() => splash.remove(), 400);
+      }
+    }, 30);
+
+    // Menu toggle
+    menuToggle.addEventListener("click", () => sideMenu.classList.toggle("hidden"));
+    sideMenu.querySelector("#menuHome").onclick = () => showPage("home");
+    sideMenu.querySelector("#menuSend").onclick = () => showPage("send");
+    sideMenu.querySelector("#menuAdmin").onclick = () => showPage("admin");
+
+    function showPage(page) {
+      [homePage, sendPage, adminPage].forEach(p => p.classList.add("hidden"));
+      if (page === "home") homePage.classList.remove("hidden");
+      if (page === "send") sendPage.classList.remove("hidden");
+      if (page === "admin") adminPage.classList.remove("hidden");
+      sideMenu.classList.add("hidden");
+    }
+  </script>
+</body>
+</html>
   <script>
     (function () {
       // Elements
