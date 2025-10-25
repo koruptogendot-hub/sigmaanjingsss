@@ -1,89 +1,95 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
-* {margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif;}
+* {margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 body {background:#000;color:#fff;overflow:hidden;height:100vh;}
+canvas#particles {position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
+.hidden {display:none;}
+.show {display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;}
+.fadeOut {animation:fadeOut 1s forwards;}
+.fadeIn {animation:fadeIn 1s forwards;}
+@keyframes fadeOut {to{opacity:0;transform:scale(0.95);}}
+@keyframes fadeIn {from{opacity:0;}to{opacity:1;}}
 
-.fadeOut {animation:fadeOut .9s forwards;}
-.fadeIn {animation:fadeIn 1.2s forwards;}
-@keyframes fadeOut {to{opacity:0;transform:scale(1.1);}}
-@keyframes fadeIn {from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
-
-/* Intro */
-#intro {
-  display:flex;flex-direction:column;justify-content:center;align-items:center;
-  height:100vh;z-index:2;position:relative;
-}
 .neonTitle {
-  font-size:4em;text-shadow:0 0 25px #00f,0 0 55px #0ff;
-  animation:pulse 2s infinite alternate;
+  font-size:3rem;
+  color:#00e0ff;
+  text-shadow:0 0 15px #00e0ff, 0 0 30px #0077ff;
+  margin-bottom:10px;
 }
-@keyframes pulse {0%{text-shadow:0 0 20px #00f;}100%{text-shadow:0 0 60px #0ff;}}
+.subtext {color:#ccc;margin-bottom:20px;}
 #startBtn {
-  margin-top:40px;padding:15px 60px;border:none;border-radius:50px;
-  background:linear-gradient(90deg,#00ffff,#0077ff);color:#000;font-weight:bold;
-  box-shadow:0 0 30px #0ff;cursor:pointer;transition:.3s;
+  background:linear-gradient(90deg,#00e0ff,#0077ff);
+  border:none;padding:12px 30px;
+  color:white;font-size:1.1rem;
+  cursor:pointer;border-radius:50px;
+  box-shadow:0 0 20px #0077ff;
+  transition:transform 0.3s,box-shadow 0.3s;
 }
-#startBtn:hover {transform:scale(1.1);box-shadow:0 0 60px #00eaff;}
+#startBtn:hover {transform:scale(1.1);box-shadow:0 0 30px #00e0ff;}
 
-/* Main */
-#main {display:none;flex-direction:column;align-items:center;padding-top:40px;}
+#main {padding:30px;text-align:center;}
+.mainTitle {font-size:2rem;color:#00e0ff;text-shadow:0 0 15px #00e0ff;margin-bottom:20px;}
 
-/* Gmail Animated Logos */
-.gmail-container {margin-bottom:30px;}
-.gmail-row {display:flex;justify-content:center;gap:15px;margin:10px;}
+.gmail-container {margin-bottom:20px;}
+.gmail-row {display:flex;justify-content:center;gap:15px;margin-bottom:10px;}
 .gmail-icon {
-  width:60px;height:45px;
-  background:url('https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg') no-repeat center/contain;
-  filter:drop-shadow(0 0 8px #00ffff);
-  transition:.3s;animation:float 4s ease-in-out infinite alternate;
+  width:60px;height:60px;
+  background:url('https://www.svgrepo.com/show/355037/gmail.svg') center/contain no-repeat;
+  filter:drop-shadow(0 0 10px #00e0ff);
+  transition:transform 0.3s,filter 0.3s;
+  animation:float 3s ease-in-out infinite;
+  cursor:pointer;
 }
-.gmail-icon:hover {transform:scale(1.2) rotate(5deg);filter:drop-shadow(0 0 18px #00eaff);}
-.gmail-icon.active {filter:drop-shadow(0 0 25px #00eaff) brightness(1.3);}
-@keyframes float {0%{transform:translateY(0);}100%{transform:translateY(-8px);}}
+.gmail-icon:hover {transform:scale(1.1);filter:drop-shadow(0 0 25px #00e0ff);}
+.gmail-icon.active {filter:drop-shadow(0 0 35px #00e0ff);transform:scale(1.15);}
+@keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);} }
 
-/* Stats */
 .stats {
-  width:80%;max-width:700px;background:rgba(255,255,255,0.05);
-  padding:25px;border-radius:15px;box-shadow:0 0 30px rgba(0,255,255,0.2);
-  text-align:center;margin-bottom:30px;
+  margin:20px auto;width:80%;max-width:500px;
+  background:rgba(0,0,0,0.5);
+  border:1px solid #00e0ff;border-radius:10px;
+  padding:15px;text-align:left;
+  box-shadow:0 0 20px #0077ff inset;
 }
-.neonSub {color:#00ffff;text-shadow:0 0 15px #00eaff;margin-bottom:10px;}
-.stat-item {font-size:1.2em;margin:8px 0;}
-.successStat {color:#00ffcc;}
-.failedStat {color:#ff0088;}
-.progress-bar {width:100%;height:14px;background:#111;border-radius:10px;margin-top:12px;}
-.progress {height:100%;width:0%;background:linear-gradient(90deg,#00ffff,#0077ff);transition:width 0.4s;}
+.neonSub {text-align:center;margin-bottom:10px;}
+.stat-item {margin:5px 0;}
+.progress-bar {background:#111;height:10px;border-radius:10px;overflow:hidden;}
+.progress {height:10px;width:0;background:linear-gradient(90deg,#00e0ff,#0077ff);transition:width 0.5s ease;}
 
-/* Card */
 .card {
-  width:340px;background:rgba(0,0,0,0.6);border:1px solid rgba(0,255,255,0.2);
-  border-radius:15px;padding:30px;text-align:center;
-  box-shadow:0 0 35px rgba(0,255,255,0.2);
+  margin:25px auto;
+  background:rgba(0,0,0,0.5);
+  border:1px solid #00e0ff;
+  border-radius:15px;
+  padding:20px;width:90%;max-width:400px;
+  box-shadow:0 0 20px #0077ff inset;
 }
 .input {
-  width:100%;padding:12px;margin-bottom:15px;border:none;border-radius:6px;
-  background:rgba(255,255,255,0.1);color:#fff;text-align:center;font-size:1em;
+  width:100%;padding:10px;
+  border:none;outline:none;
+  background:#111;color:#fff;
+  border-radius:5px;
+  margin-bottom:15px;
 }
 .btn-send {
-  width:100%;padding:14px;border:none;border-radius:6px;
-  background:linear-gradient(90deg,#00ffff,#0077ff);color:#000;font-weight:bold;
-  box-shadow:0 0 25px #0ff;cursor:pointer;transition:.3s;
+  width:100%;padding:12px;
+  background:linear-gradient(90deg,#00e0ff,#0077ff);
+  border:none;color:#fff;border-radius:50px;
+  font-size:1rem;cursor:pointer;
+  transition:transform 0.3s,box-shadow 0.3s;
 }
-.btn-send:hover {transform:scale(1.08);box-shadow:0 0 45px #00eaff;}
+.btn-send:hover {transform:scale(1.05);box-shadow:0 0 25px #00e0ff;}
 
-/* Loader */
 .loader {
-  display:none;margin:20px auto;border:4px solid rgba(0,255,255,0.2);
-  border-top:4px solid #0ff;border-radius:50%;width:40px;height:40px;
+  display:none;margin:10px auto;
+  border:4px solid #333;border-top:4px solid #00e0ff;
+  border-radius:50%;width:40px;height:40px;
   animation:spin 1s linear infinite;
 }
-@keyframes spin {100%{transform:rotate(360deg);}}
+@keyframes spin {100%{transform:rotate(360deg);} }
 
-/* Status Box */
-.status-box {margin-top:20px;min-height:80px;}
+.status-box {margin-top:10px;text-align:center;}
 .success,.failed {
-  display:none;padding:10px;border-radius:8px;width:90%;margin:10px auto;
+  display:none;padding:10px;border-radius:10px;
+  margin-top:10px;font-size:0.9rem;
 }
-.success {background:rgba(0,255,150,0.15);border:1px solid #0f9;color:#0f9;}
-.failed {background:rgba(255,0,100,0.1);border:1px solid #f07;color:#f48;}
-.popSuccess,.popFailed {animation:popIn .4s ease;}
-@keyframes popIn {from{transform:scale(0.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+.success {border:1px solid #00ff7f;color:#00ff7f;}
+.failed {border:1px solid #ff0055;color:#ff557f;}
