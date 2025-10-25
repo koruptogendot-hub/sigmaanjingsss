@@ -1,96 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Send Gmail</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Send Gmail — Stealth Mode</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <canvas id="particles"></canvas>
+  <canvas id="bgLines"></canvas>
 
-  <!-- INTRO SECTION -->
-  <section id="intro" class="show">
-    <h1 class="neonTitle">Send Gmail System</h1>
-    <p class="subtext">Powerful Email Sender Dashboard</p>
-    <button id="startBtn">Start Sending</button>
-  </section>
-
-  <!-- MAIN SECTION -->
-  <section id="main" class="hidden">
-    <h2 class="mainTitle">Send Gmail</h2>
-
-    <div class="gmail-container">
-      <div class="gmail-row">
-        <div class="gmail-icon active" title="Gmail 1"></div>
-        <div class="gmail-icon" title="Gmail 2"></div>
-        <div class="gmail-icon" title="Gmail 3"></div>
-        <div class="gmail-icon" title="Gmail 4"></div>
-        <div class="gmail-icon" title="Gmail 5"></div>
-      </div>
-      <div class="gmail-row">
-        <div class="gmail-icon" title="Gmail 6"></div>
-        <div class="gmail-icon" title="Gmail 7"></div>
-        <div class="gmail-icon" title="Gmail 8"></div>
-        <div class="gmail-icon" title="Gmail 9"></div>
-        <div class="gmail-icon" title="Gmail 10"></div>
-      </div>
-    </div>
-
-    <div class="stats">
-      <h3 class="neonSub">Statistik Pengiriman</h3>
-      <div class="stat-item successStat">SUCCESS SEND: <span id="successCount">0</span></div>
-      <div class="stat-item failedStat">FAILED SEND: <span id="failedCount">0</span></div>
-      <div class="progress-bar">
-        <div class="progress" id="progress"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <input id="number" type="text" placeholder="Enter Target Email" class="input" />
-      <button id="sendBtn" class="btn-send">Send Gmail</button>
-      <div class="loader" id="loader"></div>
-      <div class="status-box">
-        <div id="successBox" class="success"></div>
-        <div id="failedBox" class="failed"></div>
-      </div>
+  <!-- INTRO (visible at start) -->
+  <section id="intro" class="intro-visible">
+    <div class="intro-inner">
+      <h1 class="title">Send Gmail System</h1>
+      <p class="subtitle">Stealth mode — dark interface</p>
+      <button id="startBtn" class="btn-start">Start Sending</button>
     </div>
   </section>
 
+  <!-- MAIN (hidden until start clicked) -->
+  <main id="main" class="main-hidden" aria-hidden="true">
+    <div class="main-inner">
+      <h2 class="main-heading">Send Gmail</h2>
+
+      <!-- Gmail icons grid (2 rows x 5) -->
+      <div class="gmail-grid" id="gmailGrid" aria-label="Choose Gmail account">
+        <div class="gmail-cell active" data-index="0" title="Gmail 1">
+          <img class="gmail-svg" alt="Gmail 1" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
+          <div class="gmail-label">Gmail 1</div>
+        </div>
+        <div class="gmail-cell" data-index="1" title="Gmail 2">
+          <img class="gmail-svg" alt="Gmail 2" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
+          <div class="gmail-label">Gmail 2</div>
+        </div>
+        <div class="gmail-cell" data-index="2" title="Gmail 3">
+          <img class="gmail-svg" alt="Gmail 3" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
+          <div class="gmail-label">Gmail 3</div>
+        </div>
+        <div class="gmail-cell" data-index="3" title="Gmail 4">
+          <img class="gmail-svg" alt="Gmail 4" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
+          <div class="gmail-label">Gmail 4</div>
+        </div>
+        <div class="gmail-cell" data-index="4" title="Gmail 5">
+          <img class="gmail-svg" alt="Gmail 5" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
+          <div class="gmail-label">Gmail 5</div>
+        </div>
+
+        <div class="gmail-cell" data-index="5" title="Gmail 6">
+          <img class="gmail-svg" alt="Gmail 6" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
+          <div class="gmail-label">Gmail 6</div>
+        </div>
+        <div class="gmail-cell" data-index="6" title="Gmail 7">
+          <img class="gmail-svg" alt="Gmail 7" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
+          <div class="gmail-label">Gmail 7</div>
+        </div>
+        <div class="gmail-cell" data-index="7" title="Gmail 8">
+          <img class="gmail-svg" alt="Gmail 8" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
+          <div class="gmail-label">Gmail 8</div>
+        </div>
+        <div class="gmail-cell" data-index="8" title="Gmail 9">
+          <img class="gmail-svg" alt="Gmail 9" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
+          <div class="gmail-label">Gmail 9</div>
+        </div>
+        <div class="gmail-cell" data-index="9" title="Gmail 10">
+          <img class="gmail-svg" alt="Gmail 10" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
+          <div class="gmail-label">Gmail 10</div>
+        </div>
+      </div>
+
+      <!-- Statistics -->
+      <section class="stats">
+        <div class="stats-inner">
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-anim" id="statSuccessAnim" aria-hidden="true"></div>
+              <div class="stat-title">SUCCESS SEND</div>
+              <div class="stat-value" id="successCount">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-anim" id="statFailedAnim" aria-hidden="true"></div>
+              <div class="stat-title">FAILED SEND</div>
+              <div class="stat-value" id="failedCount">0</div>
+            </div>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress-labels">
+              <span>Progress</span>
+              <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar" id="progressBar"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Send card -->
+      <section class="send-card">
+        <input id="number" class="target-input" type="text" placeholder="Enter target (number or email)" />
+        <button id="sendBtn" class="btn-send">Send Now</button>
+        <div id="loader" class="loader" aria-hidden="true"></div>
+
+        <div class="result-area">
+          <div id="successBox" class="result success" role="status" aria-live="polite"></div>
+          <div id="failedBox" class="result failed" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- SCRIPT: UI behavior + particles + send (unchanged action to /api/send) -->
   <script>
+    // DOM references
     const intro = document.getElementById('intro');
     const main = document.getElementById('main');
     const startBtn = document.getElementById('startBtn');
+    const gmailCells = document.querySelectorAll('.gmail-cell');
 
-    startBtn.onclick = () => {
-      intro.classList.add('fadeOut');
+    // Start button: zoom + fade into main
+    startBtn.addEventListener('click', () => {
+      intro.classList.add('intro-zoomout');
       setTimeout(() => {
         intro.classList.add('hidden');
-        main.classList.remove('hidden');
-        main.classList.add('fadeIn');
-      }, 1000);
-    };
-
-    document.querySelectorAll('.gmail-icon').forEach(icon => {
-      icon.onclick = () => {
-        document.querySelectorAll('.gmail-icon').forEach(i => i.classList.remove('active'));
-        icon.classList.add('active');
-      };
+        main.classList.remove('main-hidden');
+        main.classList.add('main-zoomin');
+        main.setAttribute('aria-hidden', 'false');
+      }, 700);
     });
 
+    // Gmail selection
+    gmailCells.forEach(cell => {
+      cell.addEventListener('click', () => {
+        gmailCells.forEach(c => c.classList.remove('active'));
+        cell.classList.add('active');
+      });
+    });
+
+    // send button behavior -> posts to /api/send (unchanged)
     const sendBtn = document.getElementById('sendBtn');
     const loader = document.getElementById('loader');
     const successBox = document.getElementById('successBox');
     const failedBox = document.getElementById('failedBox');
-    const successCount = document.getElementById('successCount');
-    const failedCount = document.getElementById('failedCount');
-    const progress = document.getElementById('progress');
+    const successCountEl = document.getElementById('successCount');
+    const failedCountEl = document.getElementById('failedCount');
+    const progressBar = document.getElementById('progressBar');
+    const progressPercent = document.getElementById('progressPercent');
 
-    let success = 0, failed = 0;
+    let successCount = 0;
+    let failedCount = 0;
 
-    sendBtn.onclick = async () => {
-      const number = document.getElementById('number').value.trim();
-      if (!number) return alert('Masukkan email target!');
+    sendBtn.addEventListener('click', async () => {
+      const target = document.getElementById('number').value.trim();
+      if (!target) { alert('Please enter a target (number or email).'); return; }
+
       loader.style.display = 'block';
       successBox.style.display = 'none';
       failedBox.style.display = 'none';
@@ -98,66 +161,102 @@
       try {
         const res = await fetch('/api/send', {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ number })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ number: target })
         });
+
         const data = await res.json();
         loader.style.display = 'none';
+
         if (res.ok) {
-          success++;
-          successBox.innerHTML = `
-            <h4>SUCCESS SEND TO TARGET EMAIL</h4>
-            <p>TIME SEND: ${new Date().toLocaleTimeString()}</p>
-            <p>MESSAGE ID: ${data.messageId || '9999'}</p>`;
+          successCount++;
+          successCountEl.textContent = successCount;
+          successBox.innerHTML = '<strong>SUCCESS SEND TO TARGET EMAIL</strong><br>TIME SEND: ' +
+            new Date().toLocaleString() + '<br>MESSAGE ID: ' + (data.messageId || '9999');
           successBox.style.display = 'block';
         } else {
-          failed++;
-          failedBox.innerHTML = `<h4>FAILED SEND</h4><p>${data.error || 'Unknown Error'}</p>`;
+          failedCount++;
+          failedCountEl.textContent = failedCount;
+          failedBox.innerHTML = '<strong>FAILED SEND</strong><br>' + (data.error || 'Unknown error');
           failedBox.style.display = 'block';
         }
-        updateStats();
-      } catch {
+
+      } catch (err) {
         loader.style.display = 'none';
-        failed++;
-        failedBox.innerHTML = `<h4>FAILED SEND</h4><p>Network Error</p>`;
+        failedCount++;
+        failedCountEl.textContent = failedCount;
+        failedBox.innerHTML = '<strong>FAILED SEND</strong><br>Network error';
         failedBox.style.display = 'block';
-        updateStats();
       }
-    };
 
-    function updateStats() {
-      successCount.textContent = success;
-      failedCount.textContent = failed;
-      const total = success + failed;
-      progress.style.width = total ? (success / total * 100) + '%' : '0%';
-    }
+      // update progress visually (success ratio)
+      const total = successCount + failedCount;
+      const pct = total ? Math.round((successCount / total) * 100) : 0;
+      progressBar.style.width = pct + '%';
+      progressPercent.textContent = pct + '%';
+    });
 
-    // particle background
-    const canvas = document.getElementById('particles');
+    // -------- background lines (cyber lines) ----------
+    const canvas = document.getElementById('bgLines');
     const ctx = canvas.getContext('2d');
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
-    const particles = Array.from({ length: 100 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 2 + 1,
-      dx: (Math.random() - 0.5) * 0.6,
-      dy: (Math.random() - 0.5) * 0.6
-    }));
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0,255,255,0.6)';
-        ctx.fill();
-        p.x += p.dx; p.y += p.dy;
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-      });
-      requestAnimationFrame(animateParticles);
+    function resizeCanvas() {
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
     }
-    animateParticles();
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // create vertical moving line objects
+    const lines = [];
+    function initLines() {
+      lines.length = 0;
+      const count = Math.round(window.innerWidth / 40);
+      for (let i = 0; i < count; i++) {
+        const x = (i + 0.5) * (canvas.width / count);
+        lines.push({
+          x,
+          offset: (Math.random() - 0.5) * 200,
+          speed: 0.2 + Math.random() * 0.6,
+          width: 1 + Math.random() * 2,
+          alpha: 0.03 + Math.random() * 0.06
+        });
+      }
+    }
+    initLines();
+    window.addEventListener('resize', initLines);
+
+    function drawLines() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // subtle dark gradient backdrop strokes
+      lines.forEach((ln, i) => {
+        ln.offset += ln.speed;
+        if (ln.offset > canvas.height + 200) ln.offset = -200 - Math.random() * 200;
+        // draw a soft vertical band (two strokes for depth)
+        ctx.beginPath();
+        ctx.lineWidth = ln.width;
+        ctx.strokeStyle = 'rgba(50,50,50,' + (ln.alpha * 0.9) + ')';
+        ctx.moveTo(ln.x, -300 + ln.offset * 0.3);
+        ctx.lineTo(ln.x, canvas.height + 300 + ln.offset * 0.3);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.lineWidth = ln.width * 0.6;
+        ctx.strokeStyle = 'rgba(30,30,30,' + (ln.alpha) + ')';
+        ctx.moveTo(ln.x + 6, -300 + ln.offset * 0.6);
+        ctx.lineTo(ln.x + 6, canvas.height + 300 + ln.offset * 0.6);
+        ctx.stroke();
+      });
+      requestAnimationFrame(drawLines);
+    }
+    drawLines();
+
+    // small floating animation for gmail icons (subtle)
+    setInterval(() => {
+      document.querySelectorAll('.gmail-svg').forEach((el, idx) => {
+        const r = 1 + Math.sin((Date.now() / 1000) + idx) * 0.02;
+        el.style.transform = `translateY(${Math.sin((Date.now()/1000)+idx)*4}px) scale(${r}) rotate(${Math.sin((Date.now()/1400)+idx)*1}deg)`;
+      });
+    }, 32);
   </script>
 </body>
 </html>
