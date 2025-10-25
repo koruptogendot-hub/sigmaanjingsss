@@ -1,21 +1,13 @@
-const startBtn = document.getElementById("startBtn");
-const intro = document.getElementById("intro");
-const main = document.getElementById("main");
 const emailForm = document.getElementById("emailForm");
-const progressBar = document.getElementById("progressBar");
 const result = document.getElementById("result");
+const progressBar = document.getElementById("progressBar");
 let successCount = 0, failCount = 0;
-
-startBtn.addEventListener("click", () => {
-  intro.classList.add("hidden");
-  main.classList.remove("hidden");
-});
 
 emailForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const number = document.getElementById("number").value.trim();
-  progressBar.style.width = "30%";
-  result.textContent = "Sending...";
+  progressBar.style.width = "50%";
+  result.textContent = "Processing...";
 
   try {
     const res = await fetch("/api/send", {
@@ -23,8 +15,8 @@ emailForm.addEventListener("submit", async (e) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ number })
     });
-    const data = await res.json();
 
+    const data = await res.json();
     if (res.ok) {
       successCount++;
       progressBar.style.width = "100%";
@@ -32,11 +24,11 @@ emailForm.addEventListener("submit", async (e) => {
         <div class="success-box">
           SUCCESS SEND TO TARGET EMAIL<br>
           TIME SEND: ${new Date().toLocaleTimeString()}<br>
-          MESSAGE ID: ${data.messageId || "AUTO9999"}
+          MESSAGE ID: ${data.messageId || "AUTO-9999"}
         </div>`;
     } else {
       failCount++;
-      result.innerHTML = `<div class="fail-box">FAILED SEND (${data.error || "Unknown error"})</div>`;
+      result.innerHTML = `<div class="fail-box">FAILED SEND (${data.error || "Unknown Error"})</div>`;
     }
   } catch {
     failCount++;
