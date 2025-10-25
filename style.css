@@ -1,97 +1,169 @@
 /* GLOBAL STYLE */
-* { box-sizing: border-box; margin:0; padding:0; }
+* { box-sizing:border-box; margin:0; padding:0; }
 body {
   font-family:'Poppins',sans-serif;
   background:#000;
   color:#fff;
-  overflow-x:hidden;
+  scroll-behavior:smooth;
 }
 
 /* BACKGROUND */
-body::before {
+body::before{
   content:"";
-  position:fixed;
-  top:0; left:0; width:100%; height:100%;
-  background:radial-gradient(circle at center, #0f0f0f, #000);
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background:radial-gradient(circle at center,#0f0f0f,#000);
   z-index:-1;
 }
 
 /* TITLES */
-h1,h2,.main-title {
+h1,h2,.main-title{
   font-family:'Orbitron',sans-serif;
   color:#00ffff;
   text-shadow:0 0 15px #00ffff;
 }
 
 /* SECTIONS */
-.section { text-align:center; padding:50px 20px; opacity:0; animation: fadeIn 1s forwards; }
-.hidden { display:none; }
-.active { display:block; }
-
-@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+.section{
+  min-height:100vh;
+  text-align:center;
+  padding:50px 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
 
 /* MENU */
-.menu { position:fixed; top:20px; left:20px; z-index:10; }
-.menu-icon { cursor:pointer; font-size:28px; background:#0ff2; padding:6px 14px; border-radius:10px; border:1px solid #00ffff44; }
-.menu-dropdown { display:none; flex-direction:column; position:absolute; top:50px; left:0; background:#000a; border:1px solid #00ffff44; border-radius:10px; padding:10px; backdrop-filter:blur(5px);}
-.menu-dropdown.show { display:flex; }
-.menu-dropdown button { background:transparent; color:#fff; border:none; margin:4px 0; font-size:14px; cursor:pointer; }
-.menu-dropdown button:hover { color:#00ffff; text-shadow:0 0 5px #00ffff; }
+.menu{
+  position:fixed; top:20px; left:20px; z-index:10;
+}
+.menu-icon{
+  cursor:pointer;
+  font-size:28px;
+  background:#0ff2;
+  padding:6px 14px;
+  border-radius:10px;
+  border:1px solid #00ffff44;
+}
+.menu-dropdown{
+  display:flex; flex-direction:column;
+  background:#000a;
+  border:1px solid #00ffff44;
+  border-radius:10px;
+  margin-top:10px;
+  padding:10px;
+  opacity:0; transform:translateY(-20px);
+  transition:0.3s;
+}
+#menuToggleCheckbox:checked ~ .menu-dropdown{
+  opacity:1;
+  transform:translateY(0);
+}
+.menu-dropdown a{
+  text-decoration:none;
+  color:#fff;
+  margin:4px 0;
+  font-size:14px;
+  transition:0.3s;
+}
+.menu-dropdown a:hover{
+  color:#00ffff;
+  text-shadow:0 0 5px #00ffff;
+}
 
 /* RELOAD BUTTON */
-.reload-btn {
+.reload-btn{
   position:fixed; top:20px; right:20px;
   width:40px; height:40px;
   background:rgba(0,255,255,0.1);
   border:1px solid #00ffff44;
   border-radius:50%;
   display:flex; justify-content:center; align-items:center;
-  cursor:pointer;
-  color:#00ffff;
-  font-size:20px;
+  color:#00ffff; font-size:20px;
+  text-decoration:none;
   transition:0.3s;
-  z-index:10;
 }
-.reload-btn:hover { background: rgba(0,255,255,0.3); box-shadow:0 0 10px #00ffff; }
+.reload-btn:hover{
+  background: rgba(0,255,255,0.3);
+  box-shadow:0 0 10px #00ffff;
+}
 
 /* MAIN TITLE */
-.main-title { font-size:2.5em; margin-top:100px; animation: glowText 2s infinite alternate; }
-@keyframes glowText { from{text-shadow:0 0 10px #00ffff;} to{text-shadow:0 0 25px #00ffff,0 0 40px #00ffff;} }
-
-.next-btn {
-  background:#00ffff22; color:#00ffff; border:1px solid #00ffff55; border-radius:12px; padding:12px 20px; margin-top:20px; cursor:pointer;
+.main-title{
+  font-size:2.5em;
+  margin-bottom:20px;
+  animation: glowText 2s infinite alternate;
 }
-.next-btn:hover { background:#00ffff33; box-shadow:0 0 15px #00ffff; }
+@keyframes glowText{
+  from{text-shadow:0 0 10px #00ffff;}
+  to{text-shadow:0 0 25px #00ffff,0 0 40px #00ffff;}
+}
+
+.next-btn{
+  background:#00ffff22;
+  color:#00ffff;
+  border:1px solid #00ffff55;
+  border-radius:12px;
+  padding:12px 20px;
+  margin-top:20px;
+  text-decoration:none;
+  display:inline-block;
+  transition:0.3s;
+}
+.next-btn:hover{background:#00ffff33; box-shadow:0 0 15px #00ffff;}
 
 /* GMAIL GRID */
-.gmail-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(80px,1fr)); gap:10px; justify-items:center; margin:20px auto; max-width:600px; }
-
-.gmail-choice {
+.gmail-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(80px,1fr));
+  gap:10px;
+  margin:20px auto;
+  max-width:600px;
+}
+.gmail-choice{
   background:#00ffff22;
   border:1px solid #00ffff55;
   color:#00ffff;
   border-radius:8px;
   padding:10px 0;
-  width:80px;
   cursor:pointer;
   transition:0.3s;
 }
+.gmail-choice:hover{
+  background:#00ffff33;
+  box-shadow:0 0 10px #00ffff;
+}
 
-.gmail-choice:hover { background:#00ffff33; box-shadow:0 0 10px #00ffff; }
-.gmail-choice.selected { background:#00ffaa33; border-color:#00ffaa; box-shadow:0 0 15px #00ffaa; }
-
-/* FORM */
-.email-form { display:flex; justify-content:center; gap:10px; margin-top:20px; }
-.email-form input { background:#000; border:1px solid #00ffff55; color:#fff; padding:10px; border-radius:8px; width:200px; }
-.email-form button { background:#00ffff22; border:1px solid #00ffff55; color:#00ffff; border-radius:8px; padding:10px 20px; cursor:pointer; }
-.email-form button:hover { background:#00ffff33; box-shadow:0 0 10px #00ffff; }
-
-/* STATS & PROGRESS */
-.stats { margin-top:20px; }
-.progress-container { width:80%; margin:15px auto; height:10px; background:#222; border-radius:10px; overflow:hidden; }
-.progress-bar { height:10px; width:0%; background:linear-gradient(90deg,#00ffff,#00ffaa); box-shadow:0 0 10px #00ffff; animation: fillBar 2s forwards; }
-@keyframes fillBar { from{width:0%;} to{width:100%;} }
-
-.status { margin-top:20px; font-weight:bold; text-shadow:0 0 10px; }
-.status.success { color:#00ffaa; }
-.status.failed { color:#ff0044; }
+/* STATS */
+.stats{
+  margin-top:20px;
+  width:80%;
+  max-width:400px;
+  text-align:left;
+}
+.stat-item{
+  background:#111;
+  padding:10px;
+  margin:5px 0;
+  border-radius:8px;
+  border:1px solid #00ffff44;
+}
+.progress-container{
+  width:100%;
+  height:10px;
+  background:#222;
+  border-radius:10px;
+  margin-top:10px;
+  overflow:hidden;
+}
+.progress-bar{
+  height:10px;
+  width:0%;
+  background:linear-gradient(90deg,#00ffff,#00ffaa);
+  animation: fillBar 2s forwards;
+  box-shadow:0 0 10px #00ffff;
+}
+@keyframes fillBar{
+  from{width:0%;}
+  to{width:100%;}
+}
