@@ -7,17 +7,10 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="background">
-    <canvas id="cyberLines"></canvas>
-  </div>
+  <canvas id="cyberBg"></canvas>
 
-  <section class="intro" id="intro">
+  <section class="main" id="main">
     <h1 class="title">SEND GMAIL</h1>
-    <button id="startBtn" class="btn-start">Start Sending</button>
-  </section>
-
-  <section class="main hidden" id="main">
-    <h2 class="gmail-title">PILIH GMAIL</h2>
 
     <div class="gmail-grid">
       <img src="gmail.png" alt="Gmail 1" class="gmail-logo">
@@ -40,8 +33,8 @@
     </div>
 
     <form id="emailForm" class="email-form">
-      <input type="text" id="number" placeholder="Masukkan Number" required>
-      <button type="submit" class="send-btn">Send Gmail</button>
+      <input type="text" id="number" placeholder="Masukkan Nomor" required>
+      <button type="submit" class="send-btn">SEND GMAIL</button>
     </form>
 
     <div class="result" id="result"></div>
@@ -50,60 +43,6 @@
   <script src="script.js"></script>
 </body>
 </html>
-          <div id="failedBox" class="result failed" role="status" aria-live="polite"></div>
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <!-- SCRIPT: UI behavior + particles + send (unchanged action to /api/send) -->
-  <script>
-    // DOM references
-    const intro = document.getElementById('intro');
-    const main = document.getElementById('main');
-    const startBtn = document.getElementById('startBtn');
-    const gmailCells = document.querySelectorAll('.gmail-cell');
-
-    // Start button: zoom + fade into main
-    startBtn.addEventListener('click', () => {
-      intro.classList.add('intro-zoomout');
-      setTimeout(() => {
-        intro.classList.add('hidden');
-        main.classList.remove('main-hidden');
-        main.classList.add('main-zoomin');
-        main.setAttribute('aria-hidden', 'false');
-      }, 700);
-    });
-
-    // Gmail selection
-    gmailCells.forEach(cell => {
-      cell.addEventListener('click', () => {
-        gmailCells.forEach(c => c.classList.remove('active'));
-        cell.classList.add('active');
-      });
-    });
-
-    // send button behavior -> posts to /api/send (unchanged)
-    const sendBtn = document.getElementById('sendBtn');
-    const loader = document.getElementById('loader');
-    const successBox = document.getElementById('successBox');
-    const failedBox = document.getElementById('failedBox');
-    const successCountEl = document.getElementById('successCount');
-    const failedCountEl = document.getElementById('failedCount');
-    const progressBar = document.getElementById('progressBar');
-    const progressPercent = document.getElementById('progressPercent');
-
-    let successCount = 0;
-    let failedCount = 0;
-
-    sendBtn.addEventListener('click', async () => {
-      const target = document.getElementById('number').value.trim();
-      if (!target) { alert('Please enter a target (number or email).'); return; }
-
-      loader.style.display = 'block';
-      successBox.style.display = 'none';
-      failedBox.style.display = 'none';
-
       try {
         const res = await fetch('/api/send', {
           method: 'POST',
