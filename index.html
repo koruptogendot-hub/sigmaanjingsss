@@ -9,31 +9,35 @@
 <body>
   <canvas id="particles"></canvas>
 
-  <!-- INTRO PAGE -->
-  <div id="intro">
-    <h1>Send Gmail</h1>
+  <!-- Intro Section -->
+  <section id="intro">
+    <h1 class="neonTitle">Send Gmail System</h1>
     <button id="startBtn">Start Sending</button>
-  </div>
+  </section>
 
-  <!-- MAIN PAGE -->
-  <div id="main">
-    <div class="gmail-select" id="gmailSelect">
-      <div class="gmail-option active">Gmail 1</div>
-      <div class="gmail-option">Gmail 2</div>
-      <div class="gmail-option">Gmail 3</div>
-      <div class="gmail-option">Gmail 4</div>
-      <div class="gmail-option">Gmail 5</div>
-      <div class="gmail-option">Gmail 6</div>
-      <div class="gmail-option">Gmail 7</div>
-      <div class="gmail-option">Gmail 8</div>
-      <div class="gmail-option">Gmail 9</div>
-      <div class="gmail-option">Gmail 10</div>
+  <!-- Main Section -->
+  <section id="main">
+    <div class="gmail-container">
+      <div class="gmail-row">
+        <div class="gmail-icon active" title="Gmail 1"></div>
+        <div class="gmail-icon" title="Gmail 2"></div>
+        <div class="gmail-icon" title="Gmail 3"></div>
+        <div class="gmail-icon" title="Gmail 4"></div>
+        <div class="gmail-icon" title="Gmail 5"></div>
+      </div>
+      <div class="gmail-row">
+        <div class="gmail-icon" title="Gmail 6"></div>
+        <div class="gmail-icon" title="Gmail 7"></div>
+        <div class="gmail-icon" title="Gmail 8"></div>
+        <div class="gmail-icon" title="Gmail 9"></div>
+        <div class="gmail-icon" title="Gmail 10"></div>
+      </div>
     </div>
 
     <div class="stats">
-      <h3>📊 Statistik Send Email Anda</h3>
-      <p>SUCCESS SEND: <span id="successCount">0</span></p>
-      <p>FAILED SEND: <span id="failedCount">0</span></p>
+      <h3 class="neonSub">📊 Statistik Pengiriman</h3>
+      <div class="stat-item successStat">SUCCESS SEND: <span id="successCount">0</span></div>
+      <div class="stat-item failedStat">FAILED SEND: <span id="failedCount">0</span></div>
       <div class="progress-bar">
         <div class="progress" id="progress"></div>
       </div>
@@ -48,32 +52,30 @@
         <div id="failedBox" class="failed"></div>
       </div>
     </div>
-  </div>
+  </section>
 
   <script>
-    // Page transition
     const intro = document.getElementById('intro');
     const main = document.getElementById('main');
     const startBtn = document.getElementById('startBtn');
 
-    startBtn.addEventListener('click', () => {
+    startBtn.onclick = () => {
       intro.classList.add('fadeOut');
       setTimeout(() => {
         intro.style.display = 'none';
         main.style.display = 'flex';
         main.classList.add('fadeIn');
-      }, 800);
-    });
+      }, 900);
+    };
 
-    // Gmail selection
-    document.querySelectorAll('.gmail-option').forEach(opt => {
-      opt.onclick = () => {
-        document.querySelectorAll('.gmail-option').forEach(o => o.classList.remove('active'));
-        opt.classList.add('active');
+    // Gmail icon select
+    document.querySelectorAll('.gmail-icon').forEach(icon => {
+      icon.onclick = () => {
+        document.querySelectorAll('.gmail-icon').forEach(i => i.classList.remove('active'));
+        icon.classList.add('active');
       };
     });
 
-    // Send logic
     const sendBtn = document.getElementById('sendBtn');
     const loader = document.getElementById('loader');
     const successBox = document.getElementById('successBox');
@@ -87,23 +89,75 @@
     sendBtn.onclick = async () => {
       const number = document.getElementById('number').value.trim();
       if (!number) return alert('Masukkan number terlebih dahulu!');
-      
       loader.style.display = 'block';
       successBox.style.display = 'none';
       failedBox.style.display = 'none';
 
       try {
-        const res = await fetch('/api/send', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ number })
-        });
+        const res = await fetch('/api/send', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ number }) });
         const data = await res.json();
         loader.style.display = 'none';
         if (res.ok) {
           success++;
-          successBox.innerHTML = `
-            <h4>SUCCESS SEND TO TARGET EMAIL</h4>
+          successBox.innerHTML = `<h4>SUCCESS SEND TO TARGET EMAIL</h4><p>TIME SEND: ${new Date().toLocaleTimeString()}</p><p>MESSAGE ID: ${data.messageId || '9999'}</p>`;
+          successBox.style.display = 'block';
+          successBox.classList.add('popSuccess');
+        } else {
+          failed++;
+          failedBox.innerHTML = `<h4>FAILED SEND</h4><p>${data.error || 'Unknown Error'}</p>`;
+          failedBox.style.display = 'block';
+          failedBox.classList.add('popFailed');
+        }
+        updateStats();
+      } catch {
+        loader.style.display = 'none';
+        failed++;
+        failedBox.innerHTML = `<h4>FAILED SEND</h4><p>Network Error</p>`;
+        failedBox.style.display = 'block';
+        failedBox.classList.add('popFailed');
+        updateStats();
+      }
+    };
+
+    function updateStats() {
+      successCount.textContent = success;
+      failedCount.textContent = failed;
+      const total = success + failed;
+      progress.style.width = total ? (success / total * 100) + '%' : '0%';
+    }
+
+    // Particles
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+
+    let particles = Array.from({length: 100}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2 + 1,
+      dx: (Math.random() - 0.5) * 0.7,
+      dy: (Math.random() - 0.5) * 0.7
+    }));
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0,255,255,0.7)';
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+  </script>
+</body>
+</html>
             <p>TIME SEND: ${new Date().toLocaleTimeString()}</p>
             <p>MESSAGE ID: ${Math.floor(Math.random()*100000)}</p>`;
           successBox.style.display = 'block';
