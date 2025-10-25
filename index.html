@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sigma Dashboard</title>
+  <title>Send Gmail</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Background Particles -->
   <canvas id="cyberBg"></canvas>
 
-  <!-- Loading Screen -->
+  <!-- Loading -->
   <div id="loadingScreen">
     <div class="loader"></div>
     <p>Loading Website...</p>
   </div>
 
-  <!-- Navigation Menu -->
+  <!-- Menu -->
   <div class="menu">
     <div class="menu-icon" id="menuToggle">☰</div>
     <div class="menu-dropdown" id="menuDropdown">
@@ -26,32 +25,31 @@
     </div>
   </div>
 
-  <!-- Home Section -->
+  <!-- Home -->
   <section id="home" class="section active">
     <h1 class="main-title">HI, THIS IS MY WEBSITE</h1>
     <p class="subtitle">
-      Welcome to Sigma Dashboard — a modern, animated control panel for email automation.<br>
-      Built with 💻 precision and 💡 creativity.<br><br>
+      Welcome to Sigma Dashboard — a modern animated panel for email sending.<br><br>
       Created by <b>@sigmaanjing</b>
     </p>
     <button class="next-btn" onclick="showSection('sendGmail')">Go to Send Gmail</button>
   </section>
 
-  <!-- Send Gmail Section -->
+  <!-- Send Gmail -->
   <section id="sendGmail" class="section hidden">
     <h1 class="title">SEND GMAIL</h1>
 
     <div class="gmail-grid">
-      <img src="gmail.png" alt="Gmail 1" class="gmail-logo">
-      <img src="gmail.png" alt="Gmail 2" class="gmail-logo">
-      <img src="gmail.png" alt="Gmail 3" class="gmail-logo">
-      <img src="gmail.png" alt="Gmail 4" class="gmail-logo">
-      <img src="gmail.png" alt="Gmail 5" class="gmail-logo">
-      <img src="gmail.png" alt="Gmail 6" class="gmail-logo">
-      <img src="gmail.png" alt="Gmail 7" class="gmail-logo">
-      <img src="gmail.png" alt="Gmail 8" class="gmail-logo">
-      <img src="gmail.png" alt="Gmail 9" class="gmail-logo">
-      <img src="gmail.png" alt="Gmail 10" class="gmail-logo">
+      <img src="gmail.png" class="gmail-logo" alt="Gmail">
+      <img src="gmail.png" class="gmail-logo" alt="Gmail">
+      <img src="gmail.png" class="gmail-logo" alt="Gmail">
+      <img src="gmail.png" class="gmail-logo" alt="Gmail">
+      <img src="gmail.png" class="gmail-logo" alt="Gmail">
+      <img src="gmail.png" class="gmail-logo" alt="Gmail">
+      <img src="gmail.png" class="gmail-logo" alt="Gmail">
+      <img src="gmail.png" class="gmail-logo" alt="Gmail">
+      <img src="gmail.png" class="gmail-logo" alt="Gmail">
+      <img src="gmail.png" class="gmail-logo" alt="Gmail">
     </div>
 
     <div class="stats">
@@ -69,41 +67,107 @@
     <div id="status" class="status">Waiting...</div>
   </section>
 
-  <!-- Admin Section -->
+  <!-- Admin -->
   <section id="adminControl" class="section hidden">
     <h1 class="title">CONTROL ADMIN</h1>
-    <p class="subtitle">Manage your Gmail & App Password configurations easily here.</p>
+    <p class="subtitle">Manage your Gmail & App Password here.</p>
     <div class="admin-box">
       <p>Feature in development...</p>
     </div>
   </section>
 
   <script>
-    // ==== Loading Screen ====
+    // Loading
     window.addEventListener("load", () => {
       const loading = document.getElementById("loadingScreen");
       setTimeout(() => {
         loading.style.opacity = 0;
         setTimeout(() => loading.remove(), 500);
-      }, 2000);
+      }, 1500);
     });
 
-    // ==== Background Animation ====
+    // Background particle
     const canvas = document.getElementById("cyberBg");
     const ctx = canvas.getContext("2d");
     canvas.width = innerWidth;
     canvas.height = innerHeight;
-    const particles = Array.from({ length: 80 }, () => ({
+    const particles = Array.from({ length: 70 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       size: Math.random() * 2 + 1,
-      speedX: (Math.random() - 0.5) * 0.5,
-      speedY: (Math.random() - 0.5) * 0.5
+      speedX: (Math.random() - 0.5) * 0.7,
+      speedY: (Math.random() - 0.5) * 0.7
     }));
     function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => {
-        p.x += p.speedX; p.y += p.speedY;
+        p.x += p.speedX;
+        p.y += p.speedY;
+        if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+        ctx.fillStyle = "rgba(0,255,100,0.7)";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // Menu
+    const toggle = document.getElementById("menuToggle");
+    const dropdown = document.getElementById("menuDropdown");
+    toggle.addEventListener("click", () => dropdown.classList.toggle("show"));
+
+    // Section
+    function showSection(id) {
+      document.querySelectorAll(".section").forEach(s => s.classList.add("hidden"));
+      document.getElementById(id).classList.remove("hidden");
+      dropdown.classList.remove("show");
+    }
+
+    // Send Gmail Logic
+    const form = document.getElementById("sendForm");
+    const statusDiv = document.getElementById("status");
+    let successCount = 0, failCount = 0;
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const number = document.getElementById("number").value.trim();
+      if (!number) return alert("Masukkan nomor terlebih dahulu!");
+
+      statusDiv.textContent = "Sending...";
+      statusDiv.className = "status sending";
+
+      try {
+        const res = await fetch("/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ number })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          successCount++;
+          statusDiv.textContent = "SUCCESS SEND TO TARGET EMAIL";
+          statusDiv.className = "status success";
+        } else {
+          failCount++;
+          statusDiv.textContent = "FAILED SEND (App Password Missing)";
+          statusDiv.className = "status failed";
+        }
+      } catch {
+        failCount++;
+        statusDiv.textContent = "FAILED SEND (Network Error)";
+        statusDiv.className = "status failed";
+      }
+
+      document.getElementById("successCount").textContent = successCount;
+      document.getElementById("failCount").textContent = failCount;
+    });
+  </script>
+</body>
+</html>
         if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
         if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
         ctx.fillStyle = "rgba(0,255,100,0.7)";
