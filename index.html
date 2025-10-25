@@ -1,460 +1,105 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Send Gmail | Sigma Project</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send Gmail</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="bgLines"></canvas>
 
-  <!-- MENU TOGGLE -->
-  <div id="menuToggle" class="menu-toggle">☰</div>
-
-  <!-- SIDEBAR MENU -->
-  <nav id="sideMenu" class="side-menu hidden">
-    <ul>
-      <li id="menuHome">🏠 Home</li>
-      <li id="menuSend">✉️ Send Gmail</li>
-      <li id="menuAdmin">🛠️ Admin Menu</li>
-    </ul>
-  </nav>
-
-  <!-- SPLASH -->
-  <div id="splash" class="splash">
-    <div class="splash-inner">
-      <h1 class="splash-title">SEND GMAIL</h1>
-      <p class="splash-sub">Initializing system...</p>
-      <div class="splash-progress">
-        <div id="splashBar" class="splash-bar"></div>
-      </div>
-    </div>
+  <!-- Loading Screen -->
+  <div id="loading">
+    <div class="loader"></div>
+    <h2>Loading...</h2>
   </div>
 
-  <!-- HALAMAN WELCOME -->
-  <section id="homePage" class="page active">
-    <h1 class="welcome-title">Welcome to My Website</h1>
-    <p class="welcome-sub">
-      Situs ini dibuat oleh <strong>anda</strong> untuk mengelola pengiriman Gmail secara modern dan cepat.
-    </p>
-    <p class="welcome-desc">
-      Tekan tombol menu di pojok kiri atas untuk membuka <strong>Admin Menu</strong> atau <strong>Send Gmail Menu</strong>.
-    </p>
-  </section>
-
-  <!-- HALAMAN SEND GMAIL -->
-  <main id="sendPage" class="page hidden">
-    <header class="app-header">
-      <h1 class="brand">SEND GMAIL</h1>
-      <p class="tag">Stealth mode • Modern Interface</p>
+  <!-- Main Container -->
+  <div id="main" class="hidden">
+    <header>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+      <div id="menu" class="menu hidden">
+        <a href="#">Admin Menu</a>
+        <a href="#">Send Gmail Menu</a>
+      </div>
     </header>
 
+    <section class="welcome">
+      <h1>Welcome to My Website</h1>
+      <p>Created by Sigma Team</p>
+    </section>
+
     <section class="gmail-section">
-      <div class="gmail-row">
-        <div class="gmail-cell active" data-index="0"><img src="gmail.png"><div class="label">Gmail 1</div></div>
-        <div class="gmail-cell" data-index="1"><img src="gmail.png"><div class="label">Gmail 2</div></div>
-        <div class="gmail-cell" data-index="2"><img src="gmail.png"><div class="label">Gmail 3</div></div>
-        <div class="gmail-cell" data-index="3"><img src="gmail.png"><div class="label">Gmail 4</div></div>
-        <div class="gmail-cell" data-index="4"><img src="gmail.png"><div class="label">Gmail 5</div></div>
-      </div>
-      <div class="gmail-row">
-        <div class="gmail-cell" data-index="5"><img src="gmail.png"><div class="label">Gmail 6</div></div>
-        <div class="gmail-cell" data-index="6"><img src="gmail.png"><div class="label">Gmail 7</div></div>
-        <div class="gmail-cell" data-index="7"><img src="gmail.png"><div class="label">Gmail 8</div></div>
-        <div class="gmail-cell" data-index="8"><img src="gmail.png"><div class="label">Gmail 9</div></div>
-        <div class="gmail-cell" data-index="9"><img src="gmail.png"><div class="label">Gmail 10</div></div>
+      <h2>SEND GMAIL</h2>
+      <form id="sendForm">
+        <input type="text" id="number" placeholder="Enter Number" required>
+        <button type="submit">Send Gmail</button>
+      </form>
+
+      <div id="status" class="status">Waiting...</div>
+
+      <div class="stats">
+        <h3>STATISTIK SEND EMAIL ANDA</h3>
+        <div>SUCCESS SEND (<span id="successCount">0</span>)</div>
+        <div>FAILED SEND (<span id="failCount">0</span>)</div>
       </div>
     </section>
-
-    <section class="stats">
-      <div class="stat-row">
-        <div class="stat-card">
-          <div class="stat-title">SUCCESS SEND</div>
-          <div class="stat-value" id="successCount">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-title">FAILED SEND</div>
-          <div class="stat-value" id="failedCount">0</div>
-        </div>
-      </div>
-      <div class="progress-wrap">
-        <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
-      </div>
-    </section>
-
-    <section class="send">
-      <input id="target" class="input" placeholder="Masukkan nomor atau email target" />
-      <button id="sendBtn" class="btn">SEND GMAIL</button>
-      <div id="resultBox" class="result"></div>
-    </section>
-  </main>
-
-  <!-- HALAMAN ADMIN -->
-  <section id="adminPage" class="page hidden">
-    <h1 class="admin-title">Admin Menu</h1>
-    <p class="admin-desc">Fitur ini masih dikunci. Tambahkan pengaturan admin di masa depan.</p>
-  </section>
+  </div>
 
   <script>
-    const splash = document.getElementById("splash");
-    const splashBar = document.getElementById("splashBar");
-    const homePage = document.getElementById("homePage");
-    const sendPage = document.getElementById("sendPage");
-    const adminPage = document.getElementById("adminPage");
-    const sideMenu = document.getElementById("sideMenu");
-    const menuToggle = document.getElementById("menuToggle");
+    // Loading screen timeout
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('main').classList.remove('hidden');
+      }, 2500);
+    };
 
-    // Splash loading
-    let progress = 0;
-    const splashTimer = setInterval(() => {
-      progress += 2;
-      splashBar.style.width = progress + "%";
-      if (progress >= 100) {
-        clearInterval(splashTimer);
-        splash.classList.add("fadeOut");
-        setTimeout(() => splash.remove(), 400);
-      }
-    }, 30);
-
-    // Menu toggle
-    menuToggle.addEventListener("click", () => sideMenu.classList.toggle("hidden"));
-    sideMenu.querySelector("#menuHome").onclick = () => showPage("home");
-    sideMenu.querySelector("#menuSend").onclick = () => showPage("send");
-    sideMenu.querySelector("#menuAdmin").onclick = () => showPage("admin");
-
-    function showPage(page) {
-      [homePage, sendPage, adminPage].forEach(p => p.classList.add("hidden"));
-      if (page === "home") homePage.classList.remove("hidden");
-      if (page === "send") sendPage.classList.remove("hidden");
-      if (page === "admin") adminPage.classList.remove("hidden");
-      sideMenu.classList.add("hidden");
+    // Toggle menu
+    function toggleMenu() {
+      document.getElementById('menu').classList.toggle('hidden');
     }
-  </script>
-</body>
-</html>
-  <script>
-    (function () {
-      // Elements
-      const splash = document.getElementById('splash');
-      const splashBar = document.getElementById('splashBar');
-      const app = document.getElementById('app');
-      const bgCanvas = document.getElementById('bgLines');
-      const gmailCells = document.querySelectorAll('.gmail-cell');
-      const sendBtn = document.getElementById('sendBtn');
-      const targetInput = document.getElementById('target');
-      const successCountEl = document.getElementById('successCount');
-      const failedCountEl = document.getElementById('failedCount');
-      const progressBar = document.getElementById('progressBar');
-      const progressPct = document.getElementById('progressPct');
-      const successBox = document.getElementById('successBox');
-      const failedBox = document.getElementById('failedBox');
 
-      // State
-      let success = 0, failed = 0;
-      let selectedGmailIndex = 0; // default Gmail 1
+    // Handle sending
+    const form = document.getElementById('sendForm');
+    const statusDiv = document.getElementById('status');
+    let successCount = 0;
+    let failCount = 0;
 
-      // 1) Splash loading (auto run) ------------------------------------------------
-      function runSplash() {
-        splash.classList.remove('hidden');
-        let pct = 0;
-        const step = 2; // speed
-        const t = setInterval(() => {
-          pct += step;
-          splashBar.style.width = pct + '%';
-          if (pct >= 100) {
-            clearInterval(t);
-            // small delay then show app
-            splash.classList.add('fadeOut');
-            setTimeout(() => {
-              splash.style.display = 'none';
-              showApp();
-            }, 300);
-          }
-        }, 26); // ~2.6s total
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const number = document.getElementById('number').value.trim();
+      if (!number) return alert("Masukkan nomor terlebih dahulu!");
+
+      statusDiv.textContent = "Sending...";
+      statusDiv.className = "status sending";
+
+      try {
+        const res = await fetch('/api/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ number })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          successCount++;
+          statusDiv.textContent = "✅ SUCCESS SEND TO EMAIL TARGET";
+          statusDiv.className = "status success";
+        } else {
+          failCount++;
+          statusDiv.textContent = "❌ FAILED SEND (App Password Missing or Error)";
+          statusDiv.className = "status failed";
+        }
+      } catch (err) {
+        failCount++;
+        statusDiv.textContent = "❌ FAILED SEND (Network Error)";
+        statusDiv.className = "status failed";
       }
 
-      function showApp() {
-        app.classList.remove('hidden');
-        app.setAttribute('aria-hidden', 'false');
-      }
-
-      // 2) Gmail selection ---------------------------------------------------------
-      gmailCells.forEach(cell => {
-        cell.addEventListener('click', () => {
-          gmailCells.forEach(c => c.classList.remove('active'));
-          cell.classList.add('active');
-          selectedGmailIndex = Number(cell.getAttribute('data-index'));
-        });
-      });
-
-      // 3) Send action (sends gmailIndex so backend knows which account)
-      sendBtn.addEventListener('click', async () => {
-        const target = targetInput.value.trim();
-        if (!target) { alert('Masukkan nomor atau email target terlebih dahulu.'); return; }
-
-        // UI pre-send
-        sendBtn.disabled = true;
-        sendBtn.textContent = 'Sending...';
-        successBox.style.display = 'none';
-        failedBox.style.display = 'none';
-        progressBar.style.width = '20%';
-        progressPct.textContent = '20%';
-
-        try {
-          const res = await fetch('/api/send', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ number: target, gmailIndex: selectedGmailIndex })
-          });
-
-          // try parsing JSON (safe)
-          let data = {};
-          try { data = await res.json(); } catch (e) { data = {}; }
-
-          if (res.ok) {
-            success++;
-            successCountEl.textContent = success;
-            successBox.innerHTML = '<strong>SUCCESS SEND TO TARGET EMAIL</strong><br>TIME SEND: ' +
-              new Date().toLocaleString() + '<br>MESSAGE ID: ' + (data.messageId || '9999');
-            successBox.style.display = 'block';
-          } else {
-            // show backend-provided error (e.g. missing app password)
-            failed++;
-            failedCountEl.textContent = failed;
-            const msg = data.error || (data.message) || 'Unknown error';
-            failedBox.innerHTML = '<strong>FAILED SEND</strong><br>' + msg;
-            failedBox.style.display = 'block';
-          }
-        } catch (err) {
-          failed++;
-          failedCountEl.textContent = failed;
-          failedBox.innerHTML = '<strong>FAILED SEND</strong><br>Network error';
-          failedBox.style.display = 'block';
-        } finally {
-          // update progress visual
-          const total = success + failed;
-          const pct = total ? Math.round((success / total) * 100) : 0;
-          progressBar.style.width = pct + '%';
-          progressPct.textContent = pct + '%';
-
-          sendBtn.disabled = false;
-          sendBtn.textContent = 'SEND GMAIL';
-        }
-      });
-
-      // 4) Background cyber lines canvas animation ---------------------------------
-      (function linesCanvas() {
-        const ctx = bgCanvas.getContext && bgCanvas.getContext('2d');
-        if (!ctx) return;
-        function resize() {
-          bgCanvas.width = innerWidth;
-          bgCanvas.height = innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        // create vertical line objects based on width
-        let lines = [];
-        function initLines() {
-          lines = [];
-          const count = Math.max(10, Math.round(innerWidth / 90));
-          for (let i = 0; i < count; i++) {
-            lines.push({
-              x: (i + 0.5) * (bgCanvas.width / count),
-              y: Math.random() * bgCanvas.height,
-              len: 0.5 * bgCanvas.height + Math.random() * 0.8 * bgCanvas.height,
-              speed: 0.2 + Math.random() * 0.6,
-              w: 1 + Math.random() * 2,
-              alpha: 0.02 + Math.random() * 0.06
-            });
-          }
-        }
-        initLines();
-        window.addEventListener('resize', initLines);
-
-        function draw() {
-          ctx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-          // dark base
-          ctx.fillStyle = '#000';
-          ctx.fillRect(0,0,bgCanvas.width,bgCanvas.height);
-
-          lines.forEach(ln => {
-            ln.y += ln.speed;
-            if (ln.y - ln.len > bgCanvas.height) ln.y = -100 - Math.random() * 200;
-            // darker band
-            ctx.beginPath();
-            ctx.lineWidth = ln.w;
-            ctx.strokeStyle = 'rgba(24,24,24,' + ln.alpha + ')';
-            ctx.moveTo(ln.x, ln.y - ln.len);
-            ctx.lineTo(ln.x, ln.y);
-            ctx.stroke();
-            // inner subtle highlight
-            ctx.beginPath();
-            ctx.lineWidth = Math.max(0.4, ln.w * 0.5);
-            ctx.strokeStyle = 'rgba(40,40,40,' + (ln.alpha * 0.6) + ')';
-            ctx.moveTo(ln.x + 6, ln.y - ln.len * 0.6);
-            ctx.lineTo(ln.x + 6, ln.y + ln.len * 0.2);
-            ctx.stroke();
-          });
-
-          requestAnimationFrame(draw);
-        }
-        draw();
-      })();
-
-      // 5) floating animation for gmail PNGs (micro transform)
-      setInterval(() => {
-        document.querySelectorAll('.gmail-img').forEach((img, idx) => {
-          const t = Date.now() / 1000;
-          img.style.transform = 'translateY(' + (Math.sin(t + idx) * 6) + 'px) rotate(' + (Math.sin(t / 1.4 + idx) * 1.5) + 'deg)';
-        });
-      }, 50);
-
-      // Start splash automatically
-      runSplash();
-    })();
-  </script>
-</body>
-</html>
-    // Short helper to avoid errors if fetch not available in environment
-    (function () {
-      const gmailCells = document.querySelectorAll('.gmail-cell');
-      const sendBtn = document.getElementById('sendBtn');
-      const input = document.getElementById('targetInput');
-      const successCountEl = document.getElementById('successCount');
-      const failedCountEl = document.getElementById('failedCount');
-      const progressBar = document.getElementById('progressBar');
-      const progressPct = document.getElementById('progressPct');
-      const successBox = document.getElementById('successBox');
-      const failedBox = document.getElementById('failedBox');
-
-      let success = 0, failed = 0;
-
-      // Gmail selection
-      gmailCells.forEach(cell => {
-        cell.addEventListener('click', () => {
-          gmailCells.forEach(c => c.classList.remove('active'));
-          cell.classList.add('active');
-        });
-      });
-
-      // Send action
-      sendBtn.addEventListener('click', async () => {
-        const target = input.value.trim();
-        if (!target) {
-          alert('Masukkan nomor example: 628555555555555');
-          return;
-        }
-
-        // UI reset
-        successBox.style.display = 'none';
-        failedBox.style.display = 'none';
-        progressBar.style.width = '20%';
-        progressPct.textContent = '20%';
-        sendBtn.disabled = true;
-        sendBtn.textContent = 'Sending...';
-
-        try {
-          const res = await fetch('/api/send', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ number: target })
-          });
-
-          const data = await res.json().catch(() => ({}));
-          if (res.ok) {
-            success++;
-            successCountEl.textContent = success;
-            successBox.innerHTML = '<strong>SUCCESS SEND TO TARGET EMAIL</strong><br>TIME SEND: ' +
-              new Date().toLocaleTimeString() + '<br>MESSAGE ID: ' + (data.messageId || '9999');
-            successBox.style.display = 'block';
-          } else {
-            failed++;
-            failedCountEl.textContent = failed;
-            failedBox.innerHTML = '<strong>FAILED SEND</strong><br>' + (data.error || 'Unknown error');
-            failedBox.style.display = 'block';
-          }
-        } catch (err) {
-          failed++;
-          failedCountEl.textContent = failed;
-          failedBox.innerHTML = '<strong>FAILED SEND</strong><br>Network error';
-          failedBox.style.display = 'block';
-        } finally {
-          const total = success + failed;
-          const pct = total ? Math.round((success / total) * 100) : 0;
-          progressBar.style.width = pct + '%';
-          progressPct.textContent = pct + '%';
-          sendBtn.disabled = false;
-          sendBtn.textContent = 'SEND GMAIL';
-        }
-      });
-
-      // Background cyber lines animation (canvas)
-      const canvas = document.getElementById('bgLines');
-      const ctx = canvas.getContext && canvas.getContext('2d');
-      function resize() {
-        if (!ctx) return;
-        canvas.width = innerWidth;
-        canvas.height = innerHeight;
-      }
-      window.addEventListener('resize', resize);
-      resize();
-
-      if (ctx) {
-        const lines = [];
-        function initLines() {
-          lines.length = 0;
-          const count = Math.max(8, Math.round(innerWidth / 120));
-          for (let i = 0; i < count; i++) {
-            lines.push({
-              x: (i + 0.5) * (canvas.width / count),
-              y: Math.random() * canvas.height,
-              speed: 0.3 + Math.random() * 0.6,
-              len: canvas.height * (0.6 + Math.random() * 0.6),
-              alpha: 0.02 + Math.random() * 0.06,
-              w: 1 + Math.random() * 2
-            });
-          }
-        }
-        initLines();
-        window.addEventListener('resize', initLines);
-
-        function draw() {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = '#000';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          lines.forEach((ln, i) => {
-            ln.y += ln.speed;
-            if (ln.y - ln.len > canvas.height) ln.y = -50 - Math.random() * 200;
-            // main stroke (dark subtle)
-            ctx.beginPath();
-            ctx.lineWidth = ln.w;
-            ctx.strokeStyle = 'rgba(20,20,20,' + ln.alpha + ')';
-            ctx.moveTo(ln.x, ln.y - ln.len);
-            ctx.lineTo(ln.x, ln.y);
-            ctx.stroke();
-            // inner faint highlight
-            ctx.beginPath();
-            ctx.lineWidth = Math.max(0.4, ln.w * 0.5);
-            ctx.strokeStyle = 'rgba(40,40,40,' + (ln.alpha * 0.6) + ')';
-            ctx.moveTo(ln.x + 6, ln.y - ln.len * 0.6);
-            ctx.lineTo(ln.x + 6, ln.y + ln.len * 0.2);
-            ctx.stroke();
-          });
-          requestAnimationFrame(draw);
-        }
-        draw();
-      }
-
-      // subtle floating animation for gmail PNGs (CSS already handles most; this adds micro-rotation)
-      setInterval(() => {
-        document.querySelectorAll('.gmail-img').forEach((img, idx) => {
-          const t = Date.now() / 1000;
-          img.style.transform = 'translateY(' + (Math.sin(t + idx) * 5) + 'px) rotate(' + (Math.sin(t / 1.4 + idx) * 1.5) + 'deg)';
-        });
-      }, 60);
-    })();
+      document.getElementById('successCount').textContent = successCount;
+      document.getElementById('failCount').textContent = failCount;
+    });
   </script>
 </body>
 </html>
