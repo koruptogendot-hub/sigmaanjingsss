@@ -3,102 +3,169 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Send Gmail</title>
+  <title>Sigma Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Background Particles -->
+  <canvas id="cyberBg"></canvas>
 
   <!-- Loading Screen -->
-  <div id="loading">
+  <div id="loadingScreen">
     <div class="loader"></div>
-    <h2>Loading...</h2>
+    <p>Loading Website...</p>
   </div>
 
-  <!-- Main Container -->
-  <div id="main" class="hidden">
-    <header>
-      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
-      <div id="menu" class="menu hidden">
-        <a href="#">Admin Menu</a>
-        <a href="#">Send Gmail Menu</a>
-      </div>
-    </header>
-
-    <section class="welcome">
-      <h1>Welcome to My Website</h1>
-      <p>Created by Sigma Team</p>
-    </section>
-
-    <section class="gmail-section">
-      <h2>SEND GMAIL</h2>
-      <form id="sendForm">
-        <input type="text" id="number" placeholder="Enter Number" required>
-        <button type="submit">Send Gmail</button>
-      </form>
-
-      <div id="status" class="status">Waiting...</div>
-
-      <div class="stats">
-        <h3>STATISTIK SEND EMAIL ANDA</h3>
-        <div>SUCCESS SEND (<span id="successCount">0</span>)</div>
-        <div>FAILED SEND (<span id="failCount">0</span>)</div>
-      </div>
-    </section>
+  <!-- Navigation Menu -->
+  <div class="menu">
+    <div class="menu-icon" id="menuToggle">☰</div>
+    <div class="menu-dropdown" id="menuDropdown">
+      <button onclick="showSection('home')">🏠 Home</button>
+      <button onclick="showSection('sendGmail')">📧 Send Gmail</button>
+      <button onclick="showSection('adminControl')">⚙️ Control Admin</button>
+    </div>
   </div>
+
+  <!-- Home Section -->
+  <section id="home" class="section active">
+    <h1 class="main-title">HI, THIS IS MY WEBSITE</h1>
+    <p class="subtitle">
+      Welcome to Sigma Dashboard — a modern, animated control panel for email automation.<br>
+      Built with 💻 precision and 💡 creativity.<br><br>
+      Created by <b>@sigmaanjing</b>
+    </p>
+    <button class="next-btn" onclick="showSection('sendGmail')">Go to Send Gmail</button>
+  </section>
+
+  <!-- Send Gmail Section -->
+  <section id="sendGmail" class="section hidden">
+    <h1 class="title">SEND GMAIL</h1>
+
+    <div class="gmail-grid">
+      <img src="gmail.png" alt="Gmail 1" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 2" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 3" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 4" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 5" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 6" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 7" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 8" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 9" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 10" class="gmail-logo">
+    </div>
+
+    <div class="stats">
+      <h3>STATISTIK SEND EMAIL ANDA</h3>
+      <div class="stat-item">SUCCESS SEND (<span id="successCount">0</span>)</div>
+      <div class="stat-item">FAILED SEND (<span id="failCount">0</span>)</div>
+      <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+    </div>
+
+    <form id="sendForm" class="email-form">
+      <input type="text" id="number" placeholder="Masukkan nomor..." required />
+      <button type="submit">Send Gmail</button>
+    </form>
+
+    <div id="status" class="status">Waiting...</div>
+  </section>
+
+  <!-- Admin Section -->
+  <section id="adminControl" class="section hidden">
+    <h1 class="title">CONTROL ADMIN</h1>
+    <p class="subtitle">Manage your Gmail & App Password configurations easily here.</p>
+    <div class="admin-box">
+      <p>Feature in development...</p>
+    </div>
+  </section>
 
   <script>
-    // Loading screen timeout
-    window.onload = () => {
+    // ==== Loading Screen ====
+    window.addEventListener("load", () => {
+      const loading = document.getElementById("loadingScreen");
       setTimeout(() => {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('main').classList.remove('hidden');
-      }, 2500);
-    };
+        loading.style.opacity = 0;
+        setTimeout(() => loading.remove(), 500);
+      }, 2000);
+    });
 
-    // Toggle menu
-    function toggleMenu() {
-      document.getElementById('menu').classList.toggle('hidden');
+    // ==== Background Animation ====
+    const canvas = document.getElementById("cyberBg");
+    const ctx = canvas.getContext("2d");
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+    const particles = Array.from({ length: 80 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 2 + 1,
+      speedX: (Math.random() - 0.5) * 0.5,
+      speedY: (Math.random() - 0.5) * 0.5
+    }));
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.speedX; p.y += p.speedY;
+        if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+        ctx.fillStyle = "rgba(0,255,100,0.7)";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // ==== Menu Toggle ====
+    const toggle = document.getElementById("menuToggle");
+    const dropdown = document.getElementById("menuDropdown");
+    toggle.addEventListener("click", () => dropdown.classList.toggle("show"));
+
+    // ==== Section Switcher ====
+    function showSection(id) {
+      document.querySelectorAll(".section").forEach(s => s.classList.add("hidden"));
+      document.getElementById(id).classList.remove("hidden");
+      dropdown.classList.remove("show");
     }
 
-    // Handle sending
-    const form = document.getElementById('sendForm');
-    const statusDiv = document.getElementById('status');
+    // ==== Send Gmail Logic ====
+    const form = document.getElementById("sendForm");
+    const statusDiv = document.getElementById("status");
     let successCount = 0;
     let failCount = 0;
 
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const number = document.getElementById('number').value.trim();
+      const number = document.getElementById("number").value.trim();
       if (!number) return alert("Masukkan nomor terlebih dahulu!");
 
       statusDiv.textContent = "Sending...";
       statusDiv.className = "status sending";
 
       try {
-        const res = await fetch('/api/send', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const res = await fetch("/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ number })
         });
         const data = await res.json();
 
         if (res.ok && data.success) {
           successCount++;
-          statusDiv.textContent = "✅ SUCCESS SEND TO EMAIL TARGET";
+          statusDiv.textContent = "SUCCESS SEND TO TARGET EMAIL";
           statusDiv.className = "status success";
         } else {
           failCount++;
-          statusDiv.textContent = "❌ FAILED SEND (App Password Missing or Error)";
+          statusDiv.textContent = "FAILED SEND (App Password Missing)";
           statusDiv.className = "status failed";
         }
-      } catch (err) {
+      } catch {
         failCount++;
-        statusDiv.textContent = "❌ FAILED SEND (Network Error)";
+        statusDiv.textContent = "FAILED SEND (Network Error)";
         statusDiv.className = "status failed";
       }
 
-      document.getElementById('successCount').textContent = successCount;
-      document.getElementById('failCount').textContent = failCount;
+      document.getElementById("successCount").textContent = successCount;
+      document.getElementById("failCount").textContent = failCount;
     });
   </script>
 </body>
