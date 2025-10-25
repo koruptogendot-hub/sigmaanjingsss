@@ -1,78 +1,240 @@
-/* ===== base ===== */
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{
-  background:#000;color:#e6e6e6;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow:hidden;
+body {
+  margin: 0;
+  background: #000;
+  color: #ddd;
+  font-family: "Inter", system-ui, sans-serif;
+  overflow-x: hidden;
+}
+canvas#bgLines {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
 }
 
-/* canvas */
-canvas#bgLines{position:fixed;inset:0;z-index:0;display:block}
+/* Splash */
+.splash {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+.splash-inner {
+  text-align: center;
+}
+.splash-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+.splash-sub {
+  color: #999;
+  margin-bottom: 10px;
+}
+.splash-progress {
+  width: 250px;
+  height: 10px;
+  border-radius: 10px;
+  background: #111;
+  overflow: hidden;
+}
+.splash-bar {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #222, #444);
+  transition: width 0.2s;
+}
+.fadeOut {
+  animation: fadeOut 0.4s forwards;
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
 
-/* splash (fullscreen) */
-.splash{position:fixed;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.0)}
-.splash-inner{text-align:center;color:#ddd;max-width:560px;padding:24px}
-.splash-title{font-size:34px;letter-spacing:3px;margin-bottom:8px}
-.splash-sub{color:#9a9a9a;margin-bottom:18px}
-.splash-progress{width:320px;height:12px;background:#0b0b0b;border-radius:8px;overflow:hidden;margin:0 auto}
-.splash-bar{width:0%;height:100%;background:linear-gradient(90deg,rgba(255,255,255,0.02),rgba(255,255,255,0.04));transition:width 0.2s}
+/* Pages */
+.page {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 60px 20px;
+  transition: opacity 0.5s;
+}
+.hidden {
+  display: none !important;
+}
 
-/* hide helper */
-.hidden{display:none}
-.fadeOut{animation:fadeOut .4s forwards}
-@keyframes fadeOut{to{opacity:0;transform:scale(.98)}}
+/* Menu */
+.menu-toggle {
+  position: fixed;
+  top: 15px;
+  left: 20px;
+  font-size: 28px;
+  color: #fff;
+  cursor: pointer;
+  z-index: 5;
+}
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(10, 10, 10, 0.95);
+  width: 220px;
+  height: 100%;
+  z-index: 4;
+  padding-top: 60px;
+  transition: transform 0.3s ease;
+}
+.side-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.side-menu li {
+  padding: 15px 20px;
+  border-bottom: 1px solid #111;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.side-menu li:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+.side-menu.hidden {
+  transform: translateX(-250px);
+}
 
-/* app layout */
-#app{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:36px;gap:12px;overflow:auto}
+/* Welcome page */
+.welcome-title {
+  font-size: 2.4rem;
+  margin-bottom: 15px;
+  animation: fadeInDown 1s ease;
+}
+.welcome-sub,
+.welcome-desc {
+  color: #aaa;
+  max-width: 500px;
+  margin: 10px auto;
+  line-height: 1.5;
+}
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-/* header */
-.app-header{text-align:center}
-.brand{font-size:28px;letter-spacing:3px;color:#ddd}
-.tag{font-size:13px;color:#9a9a9a}
+/* Send Gmail */
+.app-header {
+  text-align: center;
+}
+.gmail-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.gmail-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.gmail-cell {
+  width: 70px;
+  height: 70px;
+  background: #111;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.gmail-cell.active,
+.gmail-cell:hover {
+  transform: scale(1.1);
+  background: #1c1c1c;
+}
+.gmail-cell img {
+  width: 35px;
+  animation: float 3s infinite ease-in-out;
+}
+.label {
+  font-size: 12px;
+  color: #999;
+}
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
 
-/* gmail grid */
-.gmail-section{width:100%;max-width:1100px;margin-top:10px}
-.gmail-row{display:flex;justify-content:center;gap:18px;margin-bottom:12px;flex-wrap:wrap}
-.gmail-cell{width:92px;height:92px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.02));display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(255,255,255,0.02);transition:transform .28s,box-shadow .28s;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
-.gmail-img{width:48px;height:auto;display:block;transition:transform .18s,filter .2s;animation:floatY 4s ease-in-out infinite}
-.label{font-size:12px;color:#bdbdbd;margin-top:8px}
-.gmail-cell:hover{transform:translateY(-8px) scale(1.04);box-shadow:0 20px 60px rgba(0,0,0,0.7)}
-.gmail-cell.active{transform:translateY(-10px) scale(1.06);box-shadow:0 26px 90px rgba(0,0,0,0.85);border-color:rgba(255,255,255,0.03)}
+/* Stats */
+.stats {
+  background: rgba(20, 20, 20, 0.8);
+  padding: 15px;
+  border-radius: 10px;
+  margin: 20px auto;
+  max-width: 400px;
+}
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+}
+.stat-card {
+  width: 48%;
+  text-align: center;
+}
+.progress-track {
+  height: 8px;
+  background: #111;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+.progress-bar {
+  height: 8px;
+  width: 0%;
+  background: linear-gradient(90deg, #444, #777);
+  border-radius: 8px;
+  transition: width 0.3s;
+}
 
-/* stats */
-.stats{width:100%;max-width:980px;background:rgba(20,20,20,0.6);border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.02);margin-bottom:6px}
-.stat-row{display:flex;gap:12px;justify-content:center;margin-bottom:10px;flex-wrap:wrap}
-.stat-card{flex:1;min-width:160px;padding:12px;border-radius:10px;background:transparent;display:flex;flex-direction:column;align-items:center;gap:8px}
-.stat-anim{width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.02));overflow:hidden}
-.stat-title{font-size:12px;color:#bfbfbf}
-.stat-value{font-size:20px;color:#eee;font-weight:700}
-
-/* progress */
-.progress-wrap{margin-top:6px}
-.progress-labels{display:flex;justify-content:space-between;color:#bfbfbf;font-size:12px;margin-bottom:6px}
-.progress-track{background:#060606;border-radius:8px;padding:4px;border:1px solid rgba(255,255,255,0.02)}
-.progress-bar{height:12px;width:0;background:linear-gradient(90deg,rgba(255,255,255,0.02),rgba(255,255,255,0.04));border-radius:6px;transition:width .45s cubic-bezier(.2,.8,.2,1)}
-
-/* send area */
-.send{width:100%;max-width:520px;margin:6px auto;display:flex;flex-direction:column;gap:12px;align-items:center}
-.input{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);background:#0b0b0b;color:#e6e6e6;outline:none}
-.controls-row{width:100%;display:flex;justify-content:center}
-.btn{padding:12px 22px;border-radius:10px;border:none;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));color:#e6e6e6;font-weight:700;cursor:pointer;transition:transform .16s ease}
-.btn:hover{transform:translateY(-6px);box-shadow:0 18px 60px rgba(0,0,0,0.75)}
-
-/* results */
-.result-area{width:100%;display:flex;flex-direction:column;gap:8px;align-items:center}
-.result{display:none;width:100%;padding:10px;border-radius:8px;font-size:13px;text-align:center}
-.result.success{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);color:#dfe}
-.result.failed{background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02);color:#f8d}
-
-/* floating */
-@keyframes floatY{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
-
-/* responsive */
-@media (max-width:880px){
-  .gmail-cell{width:76px;height:76px}
-  .gmail-img{width:42px}
-  .brand{font-size:20px}
-  .stat-value{font-size:18px}
+/* Send area */
+.send {
+  max-width: 400px;
+  margin: 20px auto;
+}
+.input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #111;
+  color: #fff;
+}
+.btn {
+  margin-top: 15px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #222, #333);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.btn:hover {
+  transform: translateY(-4px);
+}
+.result {
+  margin-top: 10px;
+  font-size: 14px;
 }
