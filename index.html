@@ -1,109 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Send Gmail — Stealth Mode</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Send Gmail</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <canvas id="bgLines"></canvas>
+  <div class="background">
+    <canvas id="cyberLines"></canvas>
+  </div>
 
-  <!-- INTRO (visible at start) -->
-  <section id="intro" class="intro-visible">
-    <div class="intro-inner">
-      <h1 class="title">Send Gmail System</h1>
-      <p class="subtitle">Stealth mode — dark interface</p>
-      <button id="startBtn" class="btn-start">Start Sending</button>
-    </div>
+  <section class="intro" id="intro">
+    <h1 class="title">SEND GMAIL</h1>
+    <button id="startBtn" class="btn-start">Start Sending</button>
   </section>
 
-  <!-- MAIN (hidden until start clicked) -->
-  <main id="main" class="main-hidden" aria-hidden="true">
-    <div class="main-inner">
-      <h2 class="main-heading">Send Gmail</h2>
+  <section class="main hidden" id="main">
+    <h2 class="gmail-title">PILIH GMAIL</h2>
 
-      <!-- Gmail icons grid (2 rows x 5) -->
-      <div class="gmail-grid" id="gmailGrid" aria-label="Choose Gmail account">
-        <div class="gmail-cell active" data-index="0" title="Gmail 1">
-          <img class="gmail-svg" alt="Gmail 1" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
-          <div class="gmail-label">Gmail 1</div>
-        </div>
-        <div class="gmail-cell" data-index="1" title="Gmail 2">
-          <img class="gmail-svg" alt="Gmail 2" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
-          <div class="gmail-label">Gmail 2</div>
-        </div>
-        <div class="gmail-cell" data-index="2" title="Gmail 3">
-          <img class="gmail-svg" alt="Gmail 3" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
-          <div class="gmail-label">Gmail 3</div>
-        </div>
-        <div class="gmail-cell" data-index="3" title="Gmail 4">
-          <img class="gmail-svg" alt="Gmail 4" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
-          <div class="gmail-label">Gmail 4</div>
-        </div>
-        <div class="gmail-cell" data-index="4" title="Gmail 5">
-          <img class="gmail-svg" alt="Gmail 5" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
-          <div class="gmail-label">Gmail 5</div>
-        </div>
+    <div class="gmail-grid">
+      <img src="gmail.png" alt="Gmail 1" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 2" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 3" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 4" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 5" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 6" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 7" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 8" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 9" class="gmail-logo">
+      <img src="gmail.png" alt="Gmail 10" class="gmail-logo">
+    </div>
 
-        <div class="gmail-cell" data-index="5" title="Gmail 6">
-          <img class="gmail-svg" alt="Gmail 6" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
-          <div class="gmail-label">Gmail 6</div>
-        </div>
-        <div class="gmail-cell" data-index="6" title="Gmail 7">
-          <img class="gmail-svg" alt="Gmail 7" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
-          <div class="gmail-label">Gmail 7</div>
-        </div>
-        <div class="gmail-cell" data-index="7" title="Gmail 8">
-          <img class="gmail-svg" alt="Gmail 8" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
-          <div class="gmail-label">Gmail 8</div>
-        </div>
-        <div class="gmail-cell" data-index="8" title="Gmail 9">
-          <img class="gmail-svg" alt="Gmail 9" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
-          <div class="gmail-label">Gmail 9</div>
-        </div>
-        <div class="gmail-cell" data-index="9" title="Gmail 10">
-          <img class="gmail-svg" alt="Gmail 10" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.svg">
-          <div class="gmail-label">Gmail 10</div>
-        </div>
-      </div>
+    <div class="stats">
+      <h3>STATISTIK SEND EMAIL ANDA</h3>
+      <div class="stat-item">SUCCESS SEND: <span id="successCount">(0)</span></div>
+      <div class="stat-item">FAILED SEND: <span id="failCount">(0)</span></div>
+      <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+    </div>
 
-      <!-- Statistics -->
-      <section class="stats">
-        <div class="stats-inner">
-          <div class="stats-row">
-            <div class="stat-card">
-              <div class="stat-anim" id="statSuccessAnim" aria-hidden="true"></div>
-              <div class="stat-title">SUCCESS SEND</div>
-              <div class="stat-value" id="successCount">0</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-anim" id="statFailedAnim" aria-hidden="true"></div>
-              <div class="stat-title">FAILED SEND</div>
-              <div class="stat-value" id="failedCount">0</div>
-            </div>
-          </div>
+    <form id="emailForm" class="email-form">
+      <input type="text" id="number" placeholder="Masukkan Number" required>
+      <button type="submit" class="send-btn">Send Gmail</button>
+    </form>
 
-          <div class="progress-wrap">
-            <div class="progress-labels">
-              <span>Progress</span>
-              <span id="progressPercent">0%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-bar" id="progressBar"></div>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div class="result" id="result"></div>
+  </section>
 
-      <!-- Send card -->
-      <section class="send-card">
-        <input id="number" class="target-input" type="text" placeholder="Enter target (number or email)" />
-        <button id="sendBtn" class="btn-send">Send Now</button>
-        <div id="loader" class="loader" aria-hidden="true"></div>
-
-        <div class="result-area">
-          <div id="successBox" class="result success" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
           <div id="failedBox" class="result failed" role="status" aria-live="polite"></div>
         </div>
       </section>
