@@ -1,240 +1,175 @@
-body {
+* {
   margin: 0;
-  background: #000;
-  color: #ddd;
-  font-family: "Inter", system-ui, sans-serif;
-  overflow-x: hidden;
-}
-canvas#bgLines {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-}
-
-/* Splash */
-.splash {
-  position: fixed;
-  inset: 0;
-  background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-.splash-inner {
-  text-align: center;
-}
-.splash-title {
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
-.splash-sub {
-  color: #999;
-  margin-bottom: 10px;
-}
-.splash-progress {
-  width: 250px;
-  height: 10px;
-  border-radius: 10px;
-  background: #111;
-  overflow: hidden;
-}
-.splash-bar {
-  width: 0;
-  height: 100%;
-  background: linear-gradient(90deg, #222, #444);
-  transition: width 0.2s;
-}
-.fadeOut {
-  animation: fadeOut 0.4s forwards;
-}
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-  }
-}
-
-/* Pages */
-.page {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 60px 20px;
-  transition: opacity 0.5s;
-}
-.hidden {
-  display: none !important;
-}
-
-/* Menu */
-.menu-toggle {
-  position: fixed;
-  top: 15px;
-  left: 20px;
-  font-size: 28px;
-  color: #fff;
-  cursor: pointer;
-  z-index: 5;
-}
-.side-menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: rgba(10, 10, 10, 0.95);
-  width: 220px;
-  height: 100%;
-  z-index: 4;
-  padding-top: 60px;
-  transition: transform 0.3s ease;
-}
-.side-menu ul {
-  list-style: none;
   padding: 0;
-  margin: 0;
-}
-.side-menu li {
-  padding: 15px 20px;
-  border-bottom: 1px solid #111;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-.side-menu li:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-.side-menu.hidden {
-  transform: translateX(-250px);
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  color: white;
 }
 
-/* Welcome page */
-.welcome-title {
-  font-size: 2.4rem;
-  margin-bottom: 15px;
-  animation: fadeInDown 1s ease;
-}
-.welcome-sub,
-.welcome-desc {
-  color: #aaa;
-  max-width: 500px;
-  margin: 10px auto;
-  line-height: 1.5;
-}
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+body {
+  background-color: #000;
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
-/* Send Gmail */
-.app-header {
-  text-align: center;
-}
-.gmail-section {
+/* Loading screen */
+#loading {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-}
-.gmail-row {
-  display: flex;
   justify-content: center;
-  gap: 10px;
 }
-.gmail-cell {
-  width: 70px;
-  height: 70px;
+
+.loader {
+  width: 80px;
+  height: 80px;
+  border: 5px solid #333;
+  border-top: 5px solid #0f0;
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+
+.hidden { display: none; }
+
+/* Header */
+header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.menu-icon {
+  font-size: 28px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.menu-icon:hover { color: #0f0; }
+
+.menu {
+  position: absolute;
+  top: 60px; left: 20px;
   background: #111;
-  border-radius: 10px;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 0 10px #0f0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: transform 0.3s;
 }
-.gmail-cell.active,
-.gmail-cell:hover {
-  transform: scale(1.1);
-  background: #1c1c1c;
+
+.menu a {
+  text-decoration: none;
+  color: white;
+  padding: 5px 0;
+  transition: 0.2s;
 }
-.gmail-cell img {
-  width: 35px;
-  animation: float 3s infinite ease-in-out;
+
+.menu a:hover { color: #0f0; }
+
+/* Welcome section */
+.welcome {
+  text-align: center;
+  margin-top: 40px;
 }
-.label {
-  font-size: 12px;
+
+.welcome h1 {
+  font-size: 2rem;
+  color: #0f0;
+  animation: fadeIn 2s ease;
+}
+
+.welcome p {
   color: #999;
+  animation: fadeIn 3s ease;
 }
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
+
+/* Gmail form */
+.gmail-section {
+  text-align: center;
+  margin-top: 40px;
 }
+
+.gmail-section h2 {
+  color: #0f0;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+#sendForm input {
+  padding: 10px;
+  width: 60%;
+  max-width: 300px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  outline: none;
+}
+
+#sendForm button {
+  padding: 10px 20px;
+  background: #0f0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #000;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+#sendForm button:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* Status */
+.status {
+  margin-top: 20px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.status.sending { color: #ff0; }
+.status.success { color: #0f0; }
+.status.failed { color: #f00; }
 
 /* Stats */
 .stats {
-  background: rgba(20, 20, 20, 0.8);
-  padding: 15px;
-  border-radius: 10px;
-  margin: 20px auto;
-  max-width: 400px;
-}
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-}
-.stat-card {
-  width: 48%;
+  margin-top: 30px;
   text-align: center;
 }
-.progress-track {
-  height: 8px;
-  background: #111;
-  border-radius: 8px;
-  margin-top: 10px;
-}
-.progress-bar {
-  height: 8px;
-  width: 0%;
-  background: linear-gradient(90deg, #444, #777);
-  border-radius: 8px;
-  transition: width 0.3s;
+
+.stats h3 {
+  color: #0f0;
+  margin-bottom: 10px;
 }
 
-/* Send area */
-.send {
-  max-width: 400px;
-  margin: 20px auto;
+.progress-container {
+  width: 80%;
+  margin: 10px auto;
+  height: 10px;
+  background: #222;
+  border-radius: 5px;
+  overflow: hidden;
 }
-.input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  background: #111;
-  color: #fff;
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #0f0;
+  transition: width 0.5s;
 }
-.btn {
-  margin-top: 15px;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #222, #333);
-  color: #fff;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-.btn:hover {
-  transform: translateY(-4px);
-}
-.result {
-  margin-top: 10px;
-  font-size: 14px;
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
